@@ -26,6 +26,10 @@ where
             floppies,
         }
     }
+
+    pub fn free(self) -> (Slice<S, FreeRunning>, (F0, F1)) {
+        (self.pwm_slice, self.floppies)
+    }
 }
 
 impl<S, F0, F1> Oscillator for InverseOscillator<S, F0, F1>

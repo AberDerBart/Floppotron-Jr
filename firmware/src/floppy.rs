@@ -143,8 +143,4 @@ pub type Floppy5 = FloppyImpl<
     Pin<Gpio13, Output<PushPull>>,
 >;
 
-pub struct Floppies {
-    pub floppy0: Option<Floppy0>,
-}
-
-// pub static FLOPPIES: Mutex<RefCell<Option<Floppy0>>> = Mutex::new(RefCell::new(None));
+pub type Floppies = (Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5);
