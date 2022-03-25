@@ -27,7 +27,8 @@ where
         }
     }
 
-    pub fn free(self) -> (Slice<S, FreeRunning>, (F0, F1)) {
+    pub fn free(mut self) -> (Slice<S, FreeRunning>, (F0, F1)) {
+        self.stop();
         (self.pwm_slice, self.floppies)
     }
 }

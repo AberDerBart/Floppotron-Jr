@@ -30,7 +30,8 @@ where
         self.floppy.step().unwrap();
     }
 
-    pub fn free(self) -> (F, Slice<SID, FreeRunning>) {
+    pub fn free(mut self) -> (F, Slice<SID, FreeRunning>) {
+        self.stop();
         (self.floppy, self.pwm_slice)
     }
 }

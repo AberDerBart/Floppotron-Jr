@@ -30,11 +30,12 @@ impl UnisonoOscillator {
     }
 
     pub fn free(
-        self,
+        mut self,
     ) -> (
         Slice<Pwm0, FreeRunning>,
         (Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5),
     ) {
+        self.stop();
         (self.pwm_slice, self.floppies)
     }
 }
