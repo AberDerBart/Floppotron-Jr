@@ -2,7 +2,8 @@ use core::{convert::Infallible, fmt::Debug};
 use embedded_hal::digital::v2::{OutputPin, PinState};
 use rp_pico::hal::gpio::{bank0::*, Output, Pin, PushPull};
 
-enum FloppyDirection {
+#[derive(Clone, Copy, PartialEq)]
+pub enum FloppyDirection {
     Forward,
     Backward,
 }
@@ -10,6 +11,7 @@ enum FloppyDirection {
 pub trait Floppy {
     fn set_enabled(&mut self, enabled: bool) -> Result<(), FloppyError>;
     fn step(&mut self) -> Result<(), FloppyError>;
+    fn get_dir(&self) -> FloppyDirection;
 }
 
 pub struct FloppyImpl<S, D, E>
@@ -98,6 +100,10 @@ where
 
         self.pin_step.set_state(self.step_state).unwrap();
         Ok(())
+    }
+
+    fn get_dir(&self) -> FloppyDirection {
+        self.dir
     }
 }
 

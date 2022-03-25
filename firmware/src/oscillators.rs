@@ -3,9 +3,13 @@ use core::{cell::RefCell, ops::DerefMut};
 use cortex_m::interrupt::Mutex;
 use rp_pico as bsp;
 
-use bsp::{hal::pwm::Pwm0, pac::interrupt};
+use bsp::{
+    hal::pwm::{Pwm0, Pwm1, Pwm2, Pwm3, Pwm4, Pwm5, Slices},
+    pac::interrupt,
+};
 use rp_pico::hal::pwm::{FreeRunning, Slice, SliceId};
 
+pub mod inverse;
 pub mod unisono;
 
 use crate::{
@@ -90,24 +94,73 @@ where
 }
 
 pub enum OscConfiguration {
-    Unisono(UnisonoOscillator),
+    Single(
+        (
+            SingleOscillator<Floppy0, Pwm0>,
+            SingleOscillator<Floppy1, Pwm1>,
+            SingleOscillator<Floppy2, Pwm2>,
+            SingleOscillator<Floppy3, Pwm3>,
+            SingleOscillator<Floppy4, Pwm4>,
+            SingleOscillator<Floppy5, Pwm5>,
+        ),
+    ),
+    Unisono(
+        (
+            UnisonoOscillator,
+            (
+                Slice<Pwm1, FreeRunning>,
+                Slice<Pwm2, FreeRunning>,
+                Slice<Pwm3, FreeRunning>,
+                Slice<Pwm4, FreeRunning>,
+                Slice<Pwm5, FreeRunning>,
+            ),
+        ),
+    ),
 }
 
 impl OscConfiguration {
     pub fn free(
         self,
     ) -> (
-        Slice<Pwm0, FreeRunning>,
+        (
+            Slice<Pwm0, FreeRunning>,
+            Slice<Pwm1, FreeRunning>,
+            Slice<Pwm2, FreeRunning>,
+            Slice<Pwm3, FreeRunning>,
+            Slice<Pwm4, FreeRunning>,
+            Slice<Pwm5, FreeRunning>,
+        ),
         (Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5),
     ) {
         match self {
-            OscConfiguration::Unisono(os) => os.free(),
+            OscConfiguration::Unisono((os, (s1, s2, s3, s4, s5))) => {
+                let (s0, floppies) = os.free();
+                return ((s0, s1, s2, s3, s4, s5), floppies);
+            }
+            OscConfiguration::Single((os0, os1, os2, os3, os4, os5)) => {
+                let (f0, s0) = os0.free();
+                let (f1, s1) = os1.free();
+                let (f2, s2) = os2.free();
+                let (f3, s3) = os3.free();
+                let (f4, s4) = os4.free();
+                let (f5, s5) = os5.free();
+
+                return ((s0, s1, s2, s3, s4, s5), (f0, f1, f2, f3, f4, f5));
+            }
         }
     }
 
     pub fn handle_interrupt(&mut self) {
         match self {
-            OscConfiguration::Unisono(os) => os.handle_interrupt(),
+            OscConfiguration::Unisono((os, _)) => os.handle_interrupt(),
+            OscConfiguration::Single((f0, f1, f2, f3, f4, f5)) => {
+                f0.handle_interrupt();
+                f1.handle_interrupt();
+                f2.handle_interrupt();
+                f3.handle_interrupt();
+                f4.handle_interrupt();
+                f5.handle_interrupt();
+            }
         }
     }
 }
@@ -126,11 +179,18 @@ impl Oscillators {
     pub fn init(
         &mut self,
         floppies: (Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5),
-        pwm0: Slice<Pwm0, FreeRunning>,
+        slices: Slices,
     ) {
-        let mut osc0 = UnisonoOscillator::new(pwm0, floppies);
-        osc0.set_note(41);
-        self.config = Some(OscConfiguration::Unisono(osc0));
+        let osc0 = SingleOscillator::new(slices.pwm0, floppies.0);
+        let osc1 = SingleOscillator::new(slices.pwm1, floppies.1);
+        let osc2 = SingleOscillator::new(slices.pwm2, floppies.2);
+        let osc3 = SingleOscillator::new(slices.pwm3, floppies.3);
+        let osc4 = SingleOscillator::new(slices.pwm4, floppies.4);
+        let osc5 = SingleOscillator::new(slices.pwm5, floppies.5);
+
+        self.config = Some(OscConfiguration::Single((
+            osc0, osc1, osc2, osc3, osc4, osc5,
+        )));
     }
 }
 

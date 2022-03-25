@@ -7,7 +7,6 @@ use super::{set_pwm_note, Oscillator};
 pub struct UnisonoOscillator {
     pwm_slice: Slice<Pwm0, FreeRunning>,
     floppies: (Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5),
-    counter: u8,
 }
 
 impl UnisonoOscillator {
@@ -18,7 +17,6 @@ impl UnisonoOscillator {
         Self {
             pwm_slice,
             floppies,
-            counter: 0,
         }
     }
 
@@ -29,18 +27,6 @@ impl UnisonoOscillator {
         f(&mut self.floppies.3);
         f(&mut self.floppies.4);
         f(&mut self.floppies.5);
-    }
-
-    fn floppy_at_index(&mut self, index: u8, f: fn(&mut dyn Floppy) -> ()) {
-        match index {
-            0 => f(&mut self.floppies.0),
-            1 => f(&mut self.floppies.1),
-            2 => f(&mut self.floppies.2),
-            3 => f(&mut self.floppies.3),
-            4 => f(&mut self.floppies.4),
-            5 => f(&mut self.floppies.5),
-            _ => {}
-        }
     }
 
     pub fn free(
@@ -71,10 +57,5 @@ impl Oscillator for UnisonoOscillator {
         self.pwm_slice.clear_interrupt();
 
         self.all_floppies(|f| f.step().unwrap());
-        self.floppy_at_index(self.counter / 2, |f| f.step().unwrap());
-        self.counter += 1;
-        if self.counter >= 6 {
-            self.counter = 0;
-        }
     }
 }

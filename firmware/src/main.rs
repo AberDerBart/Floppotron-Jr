@@ -117,7 +117,7 @@ fn main() -> ! {
             .borrow(cs)
             .borrow_mut()
             .deref_mut()
-            .init(floppies, slices.pwm0)
+            .init(floppies, slices)
     });
 
     // enable PWM interrupt
