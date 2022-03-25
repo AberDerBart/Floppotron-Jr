@@ -111,23 +111,27 @@ impl OscConfiguration {
         }
     }
 
-    pub fn handle_interrupt(&mut self) {
+    fn for_all_osccillators(&mut self, func: fn(&mut dyn Oscillator) -> ()) {
         match self {
-            OscConfiguration::Unisono((os, _)) => os.handle_interrupt(),
-            OscConfiguration::Single((f0, f1, f2, f3, f4, f5)) => {
-                f0.handle_interrupt();
-                f1.handle_interrupt();
-                f2.handle_interrupt();
-                f3.handle_interrupt();
-                f4.handle_interrupt();
-                f5.handle_interrupt();
+            OscConfiguration::Unisono((os, _)) => func(os),
+            OscConfiguration::Single((os0, os1, os2, os3, os4, os5)) => {
+                func(os0);
+                func(os1);
+                func(os2);
+                func(os3);
+                func(os4);
+                func(os5);
             }
             OscConfiguration::Inverse((os0, os1, os2), _) => {
-                os0.handle_interrupt();
-                os1.handle_interrupt();
-                os2.handle_interrupt();
+                func(os0);
+                func(os1);
+                func(os2);
             }
         }
+    }
+
+    pub fn handle_interrupt(&mut self) {
+        self.for_all_osccillators(|os| os.stop());
     }
 
     pub fn new_single(slices: OscSlices, floppies: Floppies) -> Self {
