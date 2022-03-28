@@ -36,7 +36,19 @@ trait Oscillator {
     fn stop(&mut self);
     fn set_note(&mut self, note: u8);
     fn handle_interrupt(&mut self);
+    fn get_note(&self) -> Option<u8>;
+    fn get_age(&self) -> u8;
+    fn set_age(&mut self, age: u8);
 }
+
+type OscSlices = (
+    Slice<Pwm0, FreeRunning>,
+    Slice<Pwm1, FreeRunning>,
+    Slice<Pwm2, FreeRunning>,
+    Slice<Pwm3, FreeRunning>,
+    Slice<Pwm4, FreeRunning>,
+    Slice<Pwm5, FreeRunning>,
+);
 
 pub enum OscConfiguration {
     Single(
@@ -50,15 +62,13 @@ pub enum OscConfiguration {
         ),
     ),
     Unisono(
+        UnisonoOscillator,
         (
-            UnisonoOscillator,
-            (
-                Slice<Pwm1, FreeRunning>,
-                Slice<Pwm2, FreeRunning>,
-                Slice<Pwm3, FreeRunning>,
-                Slice<Pwm4, FreeRunning>,
-                Slice<Pwm5, FreeRunning>,
-            ),
+            Slice<Pwm1, FreeRunning>,
+            Slice<Pwm2, FreeRunning>,
+            Slice<Pwm3, FreeRunning>,
+            Slice<Pwm4, FreeRunning>,
+            Slice<Pwm5, FreeRunning>,
         ),
     ),
     Inverse(
@@ -75,19 +85,10 @@ pub enum OscConfiguration {
     ),
 }
 
-type OscSlices = (
-    Slice<Pwm0, FreeRunning>,
-    Slice<Pwm1, FreeRunning>,
-    Slice<Pwm2, FreeRunning>,
-    Slice<Pwm3, FreeRunning>,
-    Slice<Pwm4, FreeRunning>,
-    Slice<Pwm5, FreeRunning>,
-);
-
 impl OscConfiguration {
     pub fn free(self) -> (OscSlices, Floppies) {
         match self {
-            OscConfiguration::Unisono((os, (s1, s2, s3, s4, s5))) => {
+            OscConfiguration::Unisono(os, (s1, s2, s3, s4, s5)) => {
                 let (s0, floppies) = os.free();
                 return ((s0, s1, s2, s3, s4, s5), floppies);
             }
@@ -111,27 +112,135 @@ impl OscConfiguration {
         }
     }
 
-    fn for_all_osccillators(&mut self, func: fn(&mut dyn Oscillator) -> ()) {
+    fn for_each<F: Fn(&mut dyn Oscillator)>(&mut self, func: F) {
+        self.find(|osc| {
+            func(osc);
+            false
+        });
+    }
+
+    fn find<F: Fn(&mut dyn Oscillator) -> bool>(&mut self, func: F) -> Option<&mut dyn Oscillator> {
         match self {
-            OscConfiguration::Unisono((os, _)) => func(os),
-            OscConfiguration::Single((os0, os1, os2, os3, os4, os5)) => {
-                func(os0);
-                func(os1);
-                func(os2);
-                func(os3);
-                func(os4);
-                func(os5);
+            OscConfiguration::Single(oss) => {
+                if func(&mut oss.0) {
+                    return Some(&mut oss.0);
+                }
+                if func(&mut oss.1) {
+                    return Some(&mut oss.1);
+                }
+                if func(&mut oss.2) {
+                    return Some(&mut oss.2);
+                }
+                if func(&mut oss.3) {
+                    return Some(&mut oss.3);
+                }
+                if func(&mut oss.4) {
+                    return Some(&mut oss.4);
+                }
+                if func(&mut oss.5) {
+                    return Some(&mut oss.5);
+                }
+                None
             }
-            OscConfiguration::Inverse((os0, os1, os2), _) => {
-                func(os0);
-                func(os1);
-                func(os2);
+            OscConfiguration::Unisono(os, _) => {
+                if func(os) {
+                    return Some(os);
+                }
+                return None;
+            }
+            OscConfiguration::Inverse(oss, _) => {
+                if func(&mut oss.0) {
+                    return Some(&mut oss.0);
+                }
+                if func(&mut oss.1) {
+                    return Some(&mut oss.1);
+                }
+                if func(&mut oss.2) {
+                    return Some(&mut oss.2);
+                }
+                None
             }
         }
     }
 
+    pub fn oscillator_count(&self) -> u8 {
+        match self {
+            OscConfiguration::Single(_) => 6,
+            OscConfiguration::Unisono(_, _) => 1,
+            OscConfiguration::Inverse(_, _) => 3,
+        }
+    }
+
+    pub fn stop_note(&mut self, note: u8) {
+        if let Some(active_osc) = self.find(|osc| osc.get_note() == Some(note)) {
+            let active_age = active_osc.get_age();
+            active_osc.stop();
+
+            self.for_each(|osc| {
+                if let Some(osc_note) = osc.get_note() {
+                    let age = osc.get_age();
+                    if osc_note == note {
+                        osc.set_age(0);
+                    } else if age > active_age {
+                        osc.set_age(age - 1);
+                    }
+                }
+            })
+        }
+    }
+
+    pub fn play_note(&mut self, note: u8) {
+        if let Some(active_osc) = self.find(|osc| osc.get_note() == Some(note)) {
+            // retrigger
+            let active_age = active_osc.get_age();
+            active_osc.set_note(note);
+
+            self.for_each(|osc| {
+                if let Some(osc_note) = osc.get_note() {
+                    let age = osc.get_age();
+                    if age < active_age {
+                        osc.set_age(age + 1);
+                    } else if osc_note == note {
+                        osc.set_age(0);
+                    }
+                }
+            });
+            return;
+        }
+
+        if let Some(free_osc) = self.find(|osc| osc.get_note() == None) {
+            free_osc.set_note(note);
+
+            self.for_each(|osc| {
+                if let Some(osc_note) = osc.get_note() {
+                    if osc_note == note {
+                        osc.set_age(0);
+                    } else {
+                        osc.set_age(osc.get_age() + 1);
+                    }
+                }
+            });
+            return;
+        }
+
+        let osc_count = self.oscillator_count();
+        if let Some(oldest_osc) = self.find(|osc| osc.get_age() >= osc_count) {
+            oldest_osc.set_note(note);
+
+            self.for_each(|osc| {
+                if let Some(osc_note) = osc.get_note() {
+                    if osc_note == note {
+                        osc.set_age(0);
+                    } else {
+                        osc.set_age(osc.get_age() + 1);
+                    }
+                }
+            })
+        }
+    }
+
     pub fn handle_interrupt(&mut self) {
-        self.for_all_osccillators(|os| os.stop());
+        self.for_each(|os| os.stop());
     }
 
     pub fn new_single(slices: OscSlices, floppies: Floppies) -> Self {
@@ -146,10 +255,10 @@ impl OscConfiguration {
     }
 
     pub fn new_unisono(slices: OscSlices, floppies: Floppies) -> Self {
-        Self::Unisono((
+        Self::Unisono(
             UnisonoOscillator::new(slices.0, floppies),
             (slices.1, slices.2, slices.3, slices.4, slices.5),
-        ))
+        )
     }
 
     pub fn new_inverse(slices: OscSlices, floppies: Floppies) -> Self {
