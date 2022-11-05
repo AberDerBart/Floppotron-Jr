@@ -1,5 +1,8 @@
+$fn=32;
 FLOPPY_SIZE = [101.6,25.4];
 N_FLOPPIES = 6;
+
+D_PIEZO = 30; // 27mm piezo disk + 1.5mm padding
 
 Z_PCB = 10 + FLOPPY_SIZE.y * 6 + 3;
 X_BORDER = (125 - FLOPPY_SIZE.x)/2;
@@ -68,10 +71,62 @@ module pcbMount2d() {
   }
 }
 
+module piezoHole2d(){
+  circle(d=D_PIEZO);
+}
+
+module piezoCover(){
+  difference(){
+    translate([0,0,3])mirror([0,0,1])linear_extrude(3, scale=1+(2*3/D_PIEZO)){
+      difference(){
+        piezoHole2d();
+        hull(){
+          translate([12,0,0])circle(d=5);
+          translate([18,0,0])circle(d=6);
+        }
+      }
+    }
+  }
+}
+
+module cableGuideBridge() {
+  translate([0,0,-.5])cube([2,5,1], center=true);
+}
+
+module cableGuideHole2d() {
+  square([6,3],center=true);
+}
+
+module rightWall() {
+  module forEachPiezo(){
+      for(i = [0:2]){
+        translate([48, (1+2*i) * FLOPPY_SIZE.y + 10]) children();
+      }
+  }
+
+  module forEachCableGuide(){
+    for(i = [1:6]){
+      translate([75, i * FLOPPY_SIZE.y + 15])children();
+    }
+  }
+
+  translate([125-X_BORDER,0,0])rotate([90,0,90]){
+    linear_extrude(3)difference(){
+      side2d();
+      forEachPiezo()piezoHole2d();
+      forEachCableGuide()cableGuideHole2d();
+    }
+    translate([0,0,3]){
+      forEachPiezo()piezoCover();
+      forEachCableGuide()cableGuideBridge();
+    }
+  }
+}
+
 module case(){
   rotate([90,0,0])translate([0,0,-3])linear_extrude(3)frontPanel2d();
   translate([X_BORDER-3,0,0])rotate([90,0,90])linear_extrude(3)side2d();
-  translate([125-X_BORDER,0,0])rotate([90,0,90])linear_extrude(3)side2d();
+  rightWall();
   translate([0,0,Z_PCB-3])linear_extrude(3)pcbMount2d();
 }
 
