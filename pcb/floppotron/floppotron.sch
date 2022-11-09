@@ -1,0 +1,1180 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:R R2
+U 1 1 6129C71B
+P 4550 1850
+F 0 "R2" H 4620 1896 50  0000 L CNN
+F 1 "470" H 4620 1805 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal" V 4480 1850 50  0001 C CNN
+F 3 "~" H 4550 1850 50  0001 C CNN
+	1    4550 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:AudioJack2 J8
+U 1 1 61473D24
+P 1150 1100
+F 0 "J8" H 1182 1425 50  0000 C CNN
+F 1 "AudioJack2" H 1182 1334 50  0000 C CNN
+F 2 "Connector_Audio:Jack_6.35mm_Neutrik_NRJ4HF_Horizontal" H 1150 1100 50  0001 C CNN
+F 3 "~" H 1150 1100 50  0001 C CNN
+	1    1150 1100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:USB_B J9
+U 1 1 614751BF
+P 5850 1800
+F 0 "J9" H 5907 2267 50  0000 C CNN
+F 1 "USB_B" H 5907 2176 50  0000 C CNN
+F 2 "Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal" H 6000 1750 50  0001 C CNN
+F 3 " ~" H 6000 1750 50  0001 C CNN
+	1    5850 1800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5650 2450 5650 2350
+Wire Wire Line
+	6250 1800 6150 1800
+Wire Wire Line
+	6650 1600 6650 1800
+Wire Wire Line
+	6250 2350 6250 1800
+Wire Wire Line
+	5650 2350 6250 2350
+Wire Wire Line
+	5750 2450 6150 2450
+$Comp
+L Pico:Pico U2
+U 1 1 61295784
+P 5700 3600
+F 0 "U2" H 5700 4815 50  0000 C CNN
+F 1 "Pico" H 5700 4724 50  0000 C CNN
+F 2 "pico:RPi_Pico_SMD_TH" V 5700 3600 50  0001 C CNN
+F 3 "" H 5700 3600 50  0001 C CNN
+	1    5700 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 3050 6700 900 
+Wire Wire Line
+	6400 3050 6700 3050
+$Comp
+L Device:Jumper JP1
+U 1 1 61646BBA
+P 6650 2100
+F 0 "JP1" V 6696 2012 50  0000 R CNN
+F 1 "Jumper" V 6605 2012 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6650 2100 50  0001 C CNN
+F 3 "~" H 6650 2100 50  0001 C CNN
+	1    6650 2100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	6650 2400 6650 2650
+$Comp
+L Connector_Generic:Conn_01x02 POWER1
+U 1 1 61649EE8
+P 10450 1600
+F 0 "POWER1" H 10368 1275 50  0000 C CNN
+F 1 "Conn_01x02" H 10368 1366 50  0000 C CNN
+F 2 "TerminalBlock:TerminalBlock_bornier-2_P5.08mm" H 10450 1600 50  0001 C CNN
+F 3 "~" H 10450 1600 50  0001 C CNN
+	1    10450 1600
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	6950 2650 6650 2650
+$Comp
+L Connector_Generic:Conn_01x02 J2
+U 1 1 6166DAF5
+P 10150 2050
+F 0 "J2" V 10022 2130 50  0000 L CNN
+F 1 "Conn_01x02" V 10113 2130 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 10150 2050 50  0001 C CNN
+F 3 "~" H 10150 2050 50  0001 C CNN
+	1    10150 2050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6400 2850 6500 2850
+Wire Wire Line
+	10250 1500 9950 1500
+Wire Wire Line
+	10150 3500 10250 3500
+Wire Wire Line
+	10250 3500 10250 3150
+Wire Wire Line
+	10250 1850 10150 1850
+Wire Wire Line
+	10150 2150 10250 2150
+Connection ~ 10250 2150
+Wire Wire Line
+	10250 2150 10250 1850
+Wire Wire Line
+	10250 2450 10150 2450
+Connection ~ 10250 2450
+Wire Wire Line
+	10250 2450 10250 2150
+Wire Wire Line
+	10150 2800 10250 2800
+Connection ~ 10250 2800
+Wire Wire Line
+	10250 2800 10250 2450
+Wire Wire Line
+	10250 3150 10150 3150
+Connection ~ 10250 3150
+Wire Wire Line
+	10250 3150 10250 2800
+Wire Wire Line
+	10050 3500 9950 3500
+Wire Wire Line
+	9950 3500 9950 3150
+Wire Wire Line
+	9950 1850 10050 1850
+Wire Wire Line
+	10050 2150 9950 2150
+Connection ~ 9950 2150
+Wire Wire Line
+	9950 2150 9950 1850
+Wire Wire Line
+	10050 2450 9950 2450
+Connection ~ 9950 2450
+Wire Wire Line
+	9950 2450 9950 2150
+Wire Wire Line
+	10050 2800 9950 2800
+Connection ~ 9950 2800
+Wire Wire Line
+	9950 2800 9950 2450
+Wire Wire Line
+	10050 3150 9950 3150
+Connection ~ 9950 3150
+Wire Wire Line
+	9950 3150 9950 2800
+Wire Wire Line
+	10250 1850 10250 1600
+Connection ~ 10250 1850
+Connection ~ 10250 1600
+Wire Wire Line
+	9950 1850 9950 1500
+Connection ~ 9950 1850
+Connection ~ 9950 1500
+$Comp
+L Connector_Generic:Conn_01x02 J3
+U 1 1 616F9101
+P 10150 2350
+F 0 "J3" V 10022 2430 50  0000 L CNN
+F 1 "Conn_01x02" V 10113 2430 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 10150 2350 50  0001 C CNN
+F 3 "~" H 10150 2350 50  0001 C CNN
+	1    10150 2350
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J4
+U 1 1 616F9B3C
+P 10150 2650
+F 0 "J4" V 10022 2730 50  0000 L CNN
+F 1 "Conn_01x02" V 10113 2730 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 10150 2650 50  0001 C CNN
+F 3 "~" H 10150 2650 50  0001 C CNN
+	1    10150 2650
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J5
+U 1 1 616FA126
+P 10150 3000
+F 0 "J5" V 10022 3080 50  0000 L CNN
+F 1 "Conn_01x02" V 10113 3080 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 10150 3000 50  0001 C CNN
+F 3 "~" H 10150 3000 50  0001 C CNN
+	1    10150 3000
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J6
+U 1 1 616FABBA
+P 10150 3350
+F 0 "J6" V 10022 3430 50  0000 L CNN
+F 1 "Conn_01x02" V 10113 3430 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 10150 3350 50  0001 C CNN
+F 3 "~" H 10150 3350 50  0001 C CNN
+	1    10150 3350
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J7
+U 1 1 616FB207
+P 10150 3700
+F 0 "J7" V 10022 3780 50  0000 L CNN
+F 1 "Conn_01x02" V 10113 3780 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 10150 3700 50  0001 C CNN
+F 3 "~" H 10150 3700 50  0001 C CNN
+	1    10150 3700
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x02 J10
+U 1 1 617113EF
+P 1550 1000
+F 0 "J10" H 1630 992 50  0000 L CNN
+F 1 "Conn_01x02" H 1630 901 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 1550 1000 50  0001 C CNN
+F 3 "~" H 1550 1000 50  0001 C CNN
+	1    1550 1000
+	1    0    0    -1  
+$EndComp
+Connection ~ 6650 2650
+Wire Wire Line
+	6400 2650 6650 2650
+Wire Wire Line
+	6150 1600 6650 1600
+Wire Wire Line
+	6500 2200 6500 2850
+Wire Wire Line
+	5850 2200 6500 2200
+Wire Wire Line
+	5850 2200 5850 2250
+Wire Wire Line
+	4950 2250 5850 2250
+Connection ~ 5850 2200
+Wire Wire Line
+	4950 2250 4950 2850
+Wire Wire Line
+	4950 2850 5000 2850
+$Comp
+L Connector_Generic:Conn_01x04 FLOPPY2
+U 1 1 617E3BB2
+P 2100 4400
+F 0 "FLOPPY2" H 2064 4580 50  0000 L CNN
+F 1 "Conn_01x04" V 1973 4580 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical" H 2100 4400 50  0001 C CNN
+F 3 "~" H 2100 4400 50  0001 C CNN
+	1    2100 4400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2450 4500 2300 4500
+Wire Wire Line
+	2300 4400 2950 4400
+Wire Wire Line
+	2950 4400 2950 4500
+Wire Wire Line
+	3350 4900 3350 4300
+Wire Wire Line
+	3350 4300 2300 4300
+Connection ~ 3350 4900
+Wire Wire Line
+	3350 4900 3500 4900
+Wire Wire Line
+	2300 4200 3500 4200
+Wire Wire Line
+	3500 4200 3500 4500
+$Comp
+L Device:R R8
+U 1 1 617E3BEE
+P 4000 4800
+F 0 "R8" H 4070 4846 50  0000 L CNN
+F 1 "1k" H 4070 4755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 4800 50  0001 C CNN
+F 3 "~" H 4000 4800 50  0001 C CNN
+	1    4000 4800
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R7
+U 1 1 617E3BF4
+P 4000 5000
+F 0 "R7" H 4070 5046 50  0000 L CNN
+F 1 "1k" H 4070 4955 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 5000 50  0001 C CNN
+F 3 "~" H 4000 5000 50  0001 C CNN
+	1    4000 5000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R6
+U 1 1 617E3BCD
+P 4000 5100
+F 0 "R6" H 4070 5146 50  0000 L CNN
+F 1 "1k" H 4070 5055 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 5100 50  0001 C CNN
+F 3 "~" H 4000 5100 50  0001 C CNN
+	1    4000 5100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3800 4700 3800 4800
+Wire Wire Line
+	3800 4800 3850 4800
+Wire Wire Line
+	3850 5000 3250 5000
+Wire Wire Line
+	3250 5000 3250 4700
+Wire Wire Line
+	2750 4700 2750 5100
+Wire Wire Line
+	2750 5100 3850 5100
+$Comp
+L Connector_Generic:Conn_01x04 FLOPPY4
+U 1 1 617D4BD8
+P 2100 3400
+F 0 "FLOPPY4" H 2064 3580 50  0000 L CNN
+F 1 "Conn_01x04" V 1973 3580 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical" H 2100 3400 50  0001 C CNN
+F 3 "~" H 2100 3400 50  0001 C CNN
+	1    2100 3400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	2450 3500 2300 3500
+Wire Wire Line
+	2300 3400 2950 3400
+Wire Wire Line
+	2950 3400 2950 3500
+Wire Wire Line
+	3350 3900 3350 3300
+Wire Wire Line
+	3350 3300 2300 3300
+Connection ~ 3350 3900
+Wire Wire Line
+	3350 3900 3500 3900
+Wire Wire Line
+	2300 3200 3500 3200
+Wire Wire Line
+	3500 3200 3500 3500
+$Comp
+L Device:R R4
+U 1 1 617D4BFC
+P 4000 4000
+F 0 "R4" H 4070 4046 50  0000 L CNN
+F 1 "1k" H 4070 3955 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 4000 50  0001 C CNN
+F 3 "~" H 4000 4000 50  0001 C CNN
+	1    4000 4000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R5
+U 1 1 617D4C02
+P 4000 4100
+F 0 "R5" H 4070 4146 50  0000 L CNN
+F 1 "1k" H 4070 4055 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 4100 50  0001 C CNN
+F 3 "~" H 4000 4100 50  0001 C CNN
+	1    4000 4100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3800 3700 3800 3800
+Wire Wire Line
+	3800 3800 3850 3800
+Wire Wire Line
+	3850 4000 3250 4000
+Wire Wire Line
+	3250 4000 3250 3700
+Wire Wire Line
+	2750 3700 2750 4100
+Wire Wire Line
+	2750 4100 3850 4100
+Wire Wire Line
+	4150 3800 4150 3250
+Wire Wire Line
+	4150 3250 5000 3250
+Wire Wire Line
+	4150 4000 4250 4000
+Wire Wire Line
+	4250 4000 4250 3450
+Wire Wire Line
+	4250 3450 5000 3450
+Wire Wire Line
+	5000 3550 4350 3550
+Wire Wire Line
+	4350 3550 4350 4100
+Wire Wire Line
+	4350 4100 4150 4100
+Wire Wire Line
+	4150 4800 4450 4800
+Wire Wire Line
+	4450 4800 4450 3750
+Wire Wire Line
+	4450 3750 5000 3750
+Wire Wire Line
+	5000 3950 4550 3950
+Wire Wire Line
+	4550 3950 4550 5000
+Wire Wire Line
+	4550 5000 4150 5000
+Wire Wire Line
+	4150 5100 4650 5100
+Wire Wire Line
+	4650 5100 4650 4050
+Wire Wire Line
+	4650 4050 5000 4050
+Wire Wire Line
+	5000 4250 4750 4250
+Wire Wire Line
+	4850 4450 5000 4450
+Wire Wire Line
+	5000 4550 4950 4550
+$Comp
+L Connector_Generic:Conn_01x04 FLOPPY3
+U 1 1 618D5F48
+P 9300 4400
+F 0 "FLOPPY3" H 9264 4580 50  0000 L CNN
+F 1 "Conn_01x04" V 9173 4580 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical" H 9300 4400 50  0001 C CNN
+F 3 "~" H 9300 4400 50  0001 C CNN
+	1    9300 4400
+	1    0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 FLOPPY5
+U 1 1 618D5F84
+P 9300 3400
+F 0 "FLOPPY5" H 9264 3580 50  0000 L CNN
+F 1 "Conn_01x04" V 9173 3580 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical" H 9300 3400 50  0001 C CNN
+F 3 "~" H 9300 3400 50  0001 C CNN
+	1    9300 3400
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	8950 3500 9100 3500
+Wire Wire Line
+	9100 3400 8450 3400
+Wire Wire Line
+	8450 3400 8450 3500
+Wire Wire Line
+	8050 3900 8050 3300
+Wire Wire Line
+	8050 3300 9100 3300
+Connection ~ 8050 3900
+Wire Wire Line
+	8050 3900 7900 3900
+Wire Wire Line
+	9100 3200 7900 3200
+Wire Wire Line
+	7900 3200 7900 3500
+$Comp
+L Device:R R12
+U 1 1 618D5FA2
+P 7400 3800
+F 0 "R12" H 7470 3846 50  0000 L CNN
+F 1 "1k" H 7470 3755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 3800 50  0001 C CNN
+F 3 "~" H 7400 3800 50  0001 C CNN
+	1    7400 3800
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:R R13
+U 1 1 618D5FA8
+P 7400 4000
+F 0 "R13" H 7470 4046 50  0000 L CNN
+F 1 "1k" H 7470 3955 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 4000 50  0001 C CNN
+F 3 "~" H 7400 4000 50  0001 C CNN
+	1    7400 4000
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:R R14
+U 1 1 618D5FAE
+P 7400 4100
+F 0 "R14" H 7470 4146 50  0000 L CNN
+F 1 "1k" H 7470 4055 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 4100 50  0001 C CNN
+F 3 "~" H 7400 4100 50  0001 C CNN
+	1    7400 4100
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	7600 3700 7600 3800
+Wire Wire Line
+	7600 3800 7550 3800
+Wire Wire Line
+	7550 4000 8150 4000
+Wire Wire Line
+	8150 4000 8150 3700
+Wire Wire Line
+	8650 3700 8650 4100
+Wire Wire Line
+	8650 4100 7550 4100
+$Comp
+L Connector_Generic:Conn_01x04 FLOPPY1
+U 1 1 618D5FC0
+P 9300 5400
+F 0 "FLOPPY1" H 9264 5580 50  0000 L CNN
+F 1 "Conn_01x04" V 9173 5580 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical" H 9300 5400 50  0001 C CNN
+F 3 "~" H 9300 5400 50  0001 C CNN
+	1    9300 5400
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	7250 3800 7250 3250
+Wire Wire Line
+	7250 3250 6400 3250
+Wire Wire Line
+	7250 4000 7150 4000
+Wire Wire Line
+	7150 4000 7150 3450
+Wire Wire Line
+	7150 3450 6400 3450
+Wire Wire Line
+	6400 3550 7050 3550
+Wire Wire Line
+	7050 3550 7050 4100
+Wire Wire Line
+	7050 4100 7250 4100
+Wire Wire Line
+	7250 4800 6950 4800
+Wire Wire Line
+	6950 4800 6950 3750
+Wire Wire Line
+	6950 3750 6400 3750
+Wire Wire Line
+	6400 3950 6850 3950
+Wire Wire Line
+	6850 3950 6850 5000
+Wire Wire Line
+	6850 5000 7250 5000
+Wire Wire Line
+	7250 5100 6750 5100
+Wire Wire Line
+	6750 5100 6750 4050
+Wire Wire Line
+	6750 4050 6400 4050
+Wire Wire Line
+	6400 4250 6650 4250
+Wire Wire Line
+	6650 4250 6650 5800
+Wire Wire Line
+	6650 5800 7250 5800
+Wire Wire Line
+	7250 6000 6550 6000
+Wire Wire Line
+	6550 6000 6550 4450
+Wire Wire Line
+	6550 4450 6400 4450
+Wire Wire Line
+	6400 4550 6450 4550
+Wire Wire Line
+	6450 4550 6450 6100
+Wire Wire Line
+	6450 6100 7250 6100
+Wire Wire Line
+	6950 2650 6950 1500
+Wire Wire Line
+	6950 1500 9950 1500
+Wire Wire Line
+	7050 1600 7050 2850
+Wire Wire Line
+	7050 2850 6500 2850
+Wire Wire Line
+	7050 1600 10250 1600
+Connection ~ 6500 2850
+Wire Wire Line
+	4950 6100 4150 6100
+Wire Wire Line
+	4950 4550 4950 6100
+Wire Wire Line
+	4850 6000 4850 4450
+Wire Wire Line
+	4150 6000 4850 6000
+Wire Wire Line
+	4750 5800 4150 5800
+Wire Wire Line
+	4750 4250 4750 5800
+Wire Wire Line
+	2750 6100 3850 6100
+Wire Wire Line
+	2750 5700 2750 6100
+Wire Wire Line
+	3250 6000 3250 5700
+Wire Wire Line
+	3850 6000 3250 6000
+Wire Wire Line
+	3800 5800 3850 5800
+Wire Wire Line
+	3800 5700 3800 5800
+$Comp
+L Device:R R11
+U 1 1 617FFAB3
+P 4000 6100
+F 0 "R11" H 4070 6146 50  0000 L CNN
+F 1 "1k" H 4070 6055 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 6100 50  0001 C CNN
+F 3 "~" H 4000 6100 50  0001 C CNN
+	1    4000 6100
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R10
+U 1 1 617FFAAD
+P 4000 6000
+F 0 "R10" H 4070 6046 50  0000 L CNN
+F 1 "1k" H 4070 5955 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 6000 50  0001 C CNN
+F 3 "~" H 4000 6000 50  0001 C CNN
+	1    4000 6000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R9
+U 1 1 617FFAA7
+P 4000 5800
+F 0 "R9" H 4070 5846 50  0000 L CNN
+F 1 "1k" H 4070 5755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 5800 50  0001 C CNN
+F 3 "~" H 4000 5800 50  0001 C CNN
+	1    4000 5800
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3500 5200 3500 5500
+Wire Wire Line
+	2300 5200 3500 5200
+Wire Wire Line
+	3350 5900 3500 5900
+Connection ~ 3350 5900
+Wire Wire Line
+	3350 5300 2300 5300
+Wire Wire Line
+	3350 5900 3350 5300
+Wire Wire Line
+	2950 5400 2950 5500
+Wire Wire Line
+	2300 5400 2950 5400
+$Comp
+L Connector_Generic:Conn_01x04 FLOPPY0
+U 1 1 617FFA89
+P 2100 5400
+F 0 "FLOPPY0" H 2064 5580 50  0000 L CNN
+F 1 "Conn_01x04" V 1973 5580 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical" H 2100 5400 50  0001 C CNN
+F 3 "~" H 2100 5400 50  0001 C CNN
+	1    2100 5400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6150 1900 6150 2450
+$Comp
+L Connector_Generic:Conn_01x02 J11
+U 1 1 6163EECC
+P 6500 1800
+F 0 "J11" H 6580 1792 50  0000 L CNN
+F 1 "Conn_01x02" H 6580 1701 50  0000 L CNN
+F 2 "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical" H 6500 1800 50  0001 C CNN
+F 3 "~" H 6500 1800 50  0001 C CNN
+	1    6500 1800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 1800 6250 1800
+Connection ~ 6250 1800
+Wire Wire Line
+	6300 1900 6150 1900
+Connection ~ 6150 1900
+$Comp
+L Device:R R3
+U 1 1 617D4BF6
+P 4000 3800
+F 0 "R3" H 4070 3846 50  0000 L CNN
+F 1 "1k" H 4070 3755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 3930 3800 50  0000 C CNN
+F 3 "~" H 4000 3800 50  0001 C CNN
+	1    4000 3800
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Transistor_BJT:BC817 Q19
+U 1 1 617B36FB
+P 7800 3700
+F 0 "Q19" H 7991 3746 50  0000 L CNN
+F 1 "BC817" H 7991 3655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8000 3625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 7800 3700 50  0001 L CNN
+	1    7800 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8050 3900 8450 3900
+$Comp
+L Transistor_BJT:BC817 Q14
+U 1 1 618ABA16
+P 8350 3700
+F 0 "Q14" H 8541 3746 50  0000 L CNN
+F 1 "BC817" H 8541 3655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8550 3625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 8350 3700 50  0001 L CNN
+	1    8350 3700
+	1    0    0    -1  
+$EndComp
+Connection ~ 8450 3900
+Wire Wire Line
+	8450 3900 8950 3900
+$Comp
+L Transistor_BJT:BC817 Q17
+U 1 1 618AC6FC
+P 8850 3700
+F 0 "Q17" H 9041 3746 50  0000 L CNN
+F 1 "BC817" H 9041 3655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9050 3625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 8850 3700 50  0001 L CNN
+	1    8850 3700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 4500 9100 4500
+Wire Wire Line
+	9100 4400 8450 4400
+Wire Wire Line
+	8450 4400 8450 4500
+Wire Wire Line
+	8050 4900 8050 4300
+Wire Wire Line
+	8050 4300 9100 4300
+Connection ~ 8050 4900
+Wire Wire Line
+	8050 4900 7900 4900
+Wire Wire Line
+	9100 4200 7900 4200
+Wire Wire Line
+	7900 4200 7900 4500
+$Comp
+L Device:R R15
+U 1 1 61923E16
+P 7400 4800
+F 0 "R15" H 7470 4846 50  0000 L CNN
+F 1 "1k" H 7470 4755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 4800 50  0001 C CNN
+F 3 "~" H 7400 4800 50  0001 C CNN
+	1    7400 4800
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:R R16
+U 1 1 61923E1C
+P 7400 5000
+F 0 "R16" H 7470 5046 50  0000 L CNN
+F 1 "1k" H 7470 4955 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 5000 50  0001 C CNN
+F 3 "~" H 7400 5000 50  0001 C CNN
+	1    7400 5000
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:R R17
+U 1 1 61923E22
+P 7400 5100
+F 0 "R17" H 7470 5146 50  0000 L CNN
+F 1 "1k" H 7470 5055 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 5100 50  0001 C CNN
+F 3 "~" H 7400 5100 50  0001 C CNN
+	1    7400 5100
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	7600 4700 7600 4800
+Wire Wire Line
+	7600 4800 7550 4800
+Wire Wire Line
+	7550 5000 8150 5000
+Wire Wire Line
+	8150 5000 8150 4700
+Wire Wire Line
+	8650 4700 8650 5100
+Wire Wire Line
+	8650 5100 7550 5100
+$Comp
+L Transistor_BJT:BC817 Q11
+U 1 1 61923E2E
+P 7800 4700
+F 0 "Q11" H 7991 4746 50  0000 L CNN
+F 1 "BC817" H 7991 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8000 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 7800 4700 50  0001 L CNN
+	1    7800 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8050 4900 8450 4900
+$Comp
+L Transistor_BJT:BC817 Q15
+U 1 1 61923E35
+P 8350 4700
+F 0 "Q15" H 8541 4746 50  0000 L CNN
+F 1 "BC817" H 8541 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8550 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 8350 4700 50  0001 L CNN
+	1    8350 4700
+	1    0    0    -1  
+$EndComp
+Connection ~ 8450 4900
+Wire Wire Line
+	8450 4900 8950 4900
+$Comp
+L Transistor_BJT:BC817 Q18
+U 1 1 61923E3D
+P 8850 4700
+F 0 "Q18" H 9041 4746 50  0000 L CNN
+F 1 "BC817" H 9041 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9050 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 8850 4700 50  0001 L CNN
+	1    8850 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 5500 9100 5500
+Wire Wire Line
+	9100 5400 8450 5400
+Wire Wire Line
+	8450 5400 8450 5500
+Wire Wire Line
+	8050 5900 8050 5300
+Wire Wire Line
+	8050 5300 9100 5300
+Connection ~ 8050 5900
+Wire Wire Line
+	8050 5900 7900 5900
+Wire Wire Line
+	9100 5200 7900 5200
+Wire Wire Line
+	7900 5200 7900 5500
+$Comp
+L Device:R R18
+U 1 1 6193363D
+P 7400 5800
+F 0 "R18" H 7470 5846 50  0000 L CNN
+F 1 "1k" H 7470 5755 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 5800 50  0001 C CNN
+F 3 "~" H 7400 5800 50  0001 C CNN
+	1    7400 5800
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:R R19
+U 1 1 61933643
+P 7400 6000
+F 0 "R19" H 7470 6046 50  0000 L CNN
+F 1 "1k" H 7470 5955 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 6000 50  0001 C CNN
+F 3 "~" H 7400 6000 50  0001 C CNN
+	1    7400 6000
+	0    1    -1   0   
+$EndComp
+$Comp
+L Device:R R20
+U 1 1 61933649
+P 7400 6100
+F 0 "R20" H 7470 6146 50  0000 L CNN
+F 1 "1k" H 7470 6055 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.30x1.75mm_HandSolder" V 7330 6100 50  0001 C CNN
+F 3 "~" H 7400 6100 50  0001 C CNN
+	1    7400 6100
+	0    -1   1    0   
+$EndComp
+Wire Wire Line
+	7600 5700 7600 5800
+Wire Wire Line
+	7600 5800 7550 5800
+Wire Wire Line
+	7550 6000 8150 6000
+Wire Wire Line
+	8150 6000 8150 5700
+Wire Wire Line
+	8650 5700 8650 6100
+Wire Wire Line
+	8650 6100 7550 6100
+$Comp
+L Transistor_BJT:BC817 Q12
+U 1 1 61933655
+P 7800 5700
+F 0 "Q12" H 7991 5746 50  0000 L CNN
+F 1 "BC817" H 7991 5655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8000 5625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 7800 5700 50  0001 L CNN
+	1    7800 5700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8050 5900 8450 5900
+$Comp
+L Transistor_BJT:BC817 Q16
+U 1 1 6193365C
+P 8350 5700
+F 0 "Q16" H 8541 5746 50  0000 L CNN
+F 1 "BC817" H 8541 5655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8550 5625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 8350 5700 50  0001 L CNN
+	1    8350 5700
+	1    0    0    -1  
+$EndComp
+Connection ~ 8450 5900
+Wire Wire Line
+	8450 5900 8950 5900
+$Comp
+L Transistor_BJT:BC817 Q20
+U 1 1 61933664
+P 8850 5700
+F 0 "Q20" H 9041 5746 50  0000 L CNN
+F 1 "BC817" H 9041 5655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9050 5625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 8850 5700 50  0001 L CNN
+	1    8850 5700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2450 3900 2950 3900
+$Comp
+L Transistor_BJT:BC817 Q1
+U 1 1 61943E73
+P 2550 3700
+F 0 "Q1" H 2741 3746 50  0000 L CNN
+F 1 "BC817" H 2741 3655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 2750 3625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 2550 3700 50  0001 L CNN
+	1    2550 3700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Transistor_BJT:BC817 Q4
+U 1 1 619457D9
+P 3050 3700
+F 0 "Q4" H 3241 3746 50  0000 L CNN
+F 1 "BC817" H 3241 3655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3250 3625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 3050 3700 50  0001 L CNN
+	1    3050 3700
+	-1   0    0    -1  
+$EndComp
+Connection ~ 2950 3900
+Wire Wire Line
+	2950 3900 3350 3900
+$Comp
+L Transistor_BJT:BC817 Q7
+U 1 1 619461C0
+P 3600 3700
+F 0 "Q7" H 3791 3746 50  0000 L CNN
+F 1 "BC817" H 3791 3655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3800 3625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 3600 3700 50  0001 L CNN
+	1    3600 3700
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	2450 4900 2950 4900
+Wire Wire Line
+	2450 5900 2950 5900
+$Comp
+L Transistor_BJT:BC817 Q2
+U 1 1 6194A505
+P 2550 4700
+F 0 "Q2" H 2741 4746 50  0000 L CNN
+F 1 "BC817" H 2741 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 2750 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 2550 4700 50  0001 L CNN
+	1    2550 4700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Transistor_BJT:BC817 Q5
+U 1 1 6194B5EE
+P 3050 4700
+F 0 "Q5" H 3241 4746 50  0000 L CNN
+F 1 "BC817" H 3241 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3250 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 3050 4700 50  0001 L CNN
+	1    3050 4700
+	-1   0    0    -1  
+$EndComp
+Connection ~ 2950 4900
+Wire Wire Line
+	2950 4900 3350 4900
+$Comp
+L Transistor_BJT:BC817 Q8
+U 1 1 6194C26D
+P 3600 4700
+F 0 "Q8" H 3791 4746 50  0000 L CNN
+F 1 "BC817" H 3791 4655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3800 4625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 3600 4700 50  0001 L CNN
+	1    3600 4700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Transistor_BJT:BC817 Q9
+U 1 1 6194D1E7
+P 3600 5700
+F 0 "Q9" H 3791 5746 50  0000 L CNN
+F 1 "BC817" H 3791 5655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3800 5625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 3600 5700 50  0001 L CNN
+	1    3600 5700
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Transistor_BJT:BC817 Q6
+U 1 1 6194DDB0
+P 3050 5700
+F 0 "Q6" H 3241 5746 50  0000 L CNN
+F 1 "BC817" H 3241 5655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3250 5625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 3050 5700 50  0001 L CNN
+	1    3050 5700
+	-1   0    0    -1  
+$EndComp
+Connection ~ 2950 5900
+Wire Wire Line
+	2950 5900 3350 5900
+Wire Wire Line
+	2450 5500 2300 5500
+$Comp
+L Transistor_BJT:BC817 Q3
+U 1 1 619500A0
+P 2550 5700
+F 0 "Q3" H 2741 5746 50  0000 L CNN
+F 1 "BC817" H 2741 5655 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 2750 5625 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/BC818-D.pdf" H 2550 5700 50  0001 L CNN
+	1    2550 5700
+	-1   0    0    -1  
+$EndComp
+Connection ~ 4950 2850
+Connection ~ 4550 2000
+Wire Wire Line
+	3300 2100 3550 2100
+Connection ~ 3300 2100
+Wire Wire Line
+	3300 2000 3300 2100
+Wire Wire Line
+	3300 1700 3550 1700
+Connection ~ 3300 1700
+Wire Wire Line
+	3150 1700 3300 1700
+Wire Wire Line
+	3100 2100 3300 2100
+$Comp
+L Device:D D1
+U 1 1 61775400
+P 3300 1850
+F 0 "D1" V 3254 1930 50  0000 L CNN
+F 1 "D" V 3345 1930 50  0000 L CNN
+F 2 "Diode_THT:D_DO-34_SOD68_P7.62mm_Horizontal" H 3300 1850 50  0001 C CNN
+F 3 "~" H 3300 1850 50  0001 C CNN
+	1    3300 1850
+	0    1    1    0   
+$EndComp
+$Comp
+L Isolator:H11L1 U1
+U 1 1 6129B479
+P 3850 2000
+F 0 "U1" H 4194 2046 50  0000 L CNN
+F 1 "H11L1" H 4194 1955 50  0000 L CNN
+F 2 "Package_DIP:DIP-6_W7.62mm_Socket" H 3760 2000 50  0001 C CNN
+F 3 "https://www.onsemi.com/pub/Collateral/H11L3M-D.PDF" H 3760 2000 50  0001 C CNN
+	1    3850 2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 1700 2850 1700
+Wire Wire Line
+	2500 2100 2500 1700
+Wire Wire Line
+	3550 1700 3550 1900
+Wire Wire Line
+	4550 2000 4150 2000
+Wire Wire Line
+	3850 1700 4550 1700
+$Comp
+L Device:R R1
+U 1 1 6129CC96
+P 3000 1700
+F 0 "R1" V 3207 1700 50  0000 C CNN
+F 1 "220" V 3116 1700 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal" V 2930 1700 50  0001 C CNN
+F 3 "~" H 3000 1700 50  0001 C CNN
+	1    3000 1700
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector:DIN-5_180degree J1
+U 1 1 61296F3A
+P 2800 2200
+F 0 "J1" H 2800 1925 50  0000 C CNN
+F 1 "DIN-5_180degree" H 2800 1834 50  0000 C CNN
+F 2 "eurocad:MIDI_DIN5" H 2800 2200 50  0001 C CNN
+F 3 "http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf" H 2800 2200 50  0001 C CNN
+	1    2800 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 1700 4550 900 
+Wire Wire Line
+	4550 900  6700 900 
+Connection ~ 4550 1700
+Wire Wire Line
+	4550 2000 4550 2750
+Wire Wire Line
+	4550 2750 5000 2750
+Wire Wire Line
+	3850 2850 3850 2300
+Wire Wire Line
+	3850 2850 4950 2850
+Wire Wire Line
+	2250 2850 2250 1900
+Wire Wire Line
+	2250 1900 2800 1900
+$Comp
+L Device:Jumper JP2
+U 1 1 6187EE30
+P 3550 2850
+F 0 "JP2" V 3596 2762 50  0000 R CNN
+F 1 "Jumper" V 3505 2762 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3550 2850 50  0001 C CNN
+F 3 "~" H 3550 2850 50  0001 C CNN
+	1    3550 2850
+	1    0    0    -1  
+$EndComp
+Connection ~ 3850 2850
+Wire Wire Line
+	3250 2850 2250 2850
+$Comp
+L Device:Jumper JP3
+U 1 1 61898FFC
+P 6950 1200
+F 0 "JP3" V 6996 1112 50  0000 R CNN
+F 1 "Jumper" V 6905 1112 50  0000 R CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6950 1200 50  0001 C CNN
+F 3 "~" H 6950 1200 50  0001 C CNN
+	1    6950 1200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6950 900  6950 750 
+Wire Wire Line
+	6950 750  2350 750 
+Wire Wire Line
+	2350 750  2350 2200
+Wire Wire Line
+	2350 2200 2500 2200
+Connection ~ 6950 1500
+$EndSCHEMATC
