@@ -6,19 +6,23 @@
 
 use core::ops::DerefMut;
 
+use bsp::{
+    entry,
+    hal::uart::{DataBits, StopBits, UartConfig},
+};
 use cortex_m::interrupt;
-use cortex_m_rt::entry;
 use defmt::*;
 use defmt_rtt as _;
 use embedded_hal::digital::v2::OutputPin;
-use embedded_time::fixed_point::FixedPoint;
-use floppotron::{
-    deactivate_slice_ints,
-    floppy::{Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5},
-    oscillators::OSCILLATORS,
-};
+use embedded_time::{fixed_point::FixedPoint, rate::Baud};
 use panic_probe as _;
 
+use rp2040_project_template::{
+    deactivate_slice_ints,
+    floppy::{Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5},
+    listen_to_midi,
+    oscillators::{OscConfiguration, OSCILLATORS},
+};
 // Provide an alias for our BSP so we can switch targets quickly.
 // Uncomment the BSP you included in Cargo.toml, the rest of the code does not need to change.
 use rp_pico as bsp;
@@ -35,7 +39,6 @@ use bsp::hal::{
 fn main() -> ! {
     info!("Program start");
     let mut pac = pac::Peripherals::take().unwrap();
-    let core = pac::CorePeripherals::take().unwrap();
     let mut watchdog = Watchdog::new(pac.WATCHDOG);
     let sio = Sio::new(pac.SIO);
 
@@ -52,9 +55,6 @@ fn main() -> ! {
     )
     .ok()
     .unwrap();
-
-    let mut delay = cortex_m::delay::Delay::new(core.SYST, clocks.system_clock.freq().integer());
-
     let pins = bsp::Pins::new(
         pac.IO_BANK0,
         pac.PADS_BANK0,
@@ -112,30 +112,47 @@ fn main() -> ! {
 
     deactivate_slice_ints(&mut slices);
 
+    let slices = (
+        slices.pwm0,
+        slices.pwm1,
+        slices.pwm2,
+        slices.pwm3,
+        slices.pwm4,
+        slices.pwm5,
+    );
+
+    info!("unmasked");
+
+    let osc_config = OscConfiguration::new_single(slices, floppies);
+    info!("config initialized");
+
     interrupt::free(|cs| {
         OSCILLATORS
             .borrow(cs)
             .borrow_mut()
             .deref_mut()
-            .init(floppies, slices)
+            .init_with_config(osc_config)
     });
+
+    let uart_pins = (
+        pins.gpio0.into_mode::<bsp::hal::gpio::FunctionUart>(),
+        pins.gpio1.into_mode::<bsp::hal::gpio::FunctionUart>(),
+    );
+    let uart0 = bsp::hal::uart::UartPeripheral::new(pac.UART0, uart_pins, &mut pac.RESETS);
+
+    info!("freq: {}", clocks.peripheral_clock.freq().0,);
+
+    let led_pin = pins.led.into_push_pull_output();
 
     // enable PWM interrupt
     unsafe {
-        pac::NVIC::unmask(pac::Interrupt::PWM_IRQ_WRAP);
-        interrupt::enable();
+        info!("unmask");
+        pac::NVIC::unmask(pac::Interrupt::PWM_IRQ_WRAP); // infinite loop?
+        info!("enable");
+        interrupt::enable(); // infinite loop?
     }
 
-    let mut led_pin = pins.led.into_push_pull_output();
-
-    loop {
-        info!("on!");
-        led_pin.set_high().unwrap();
-        delay.delay_ms(5);
-        info!("off!");
-        led_pin.set_low().unwrap();
-        delay.delay_ms(5);
-    }
+    listen_to_midi(uart0, led_pin);
 }
 
 // End of file

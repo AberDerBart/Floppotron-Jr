@@ -1,6 +1,7 @@
 use core::{cell::RefCell, ops::DerefMut};
 
 use cortex_m::interrupt::Mutex;
+use defmt::info;
 use rp_pico as bsp;
 
 use bsp::{
@@ -172,6 +173,7 @@ impl OscConfiguration {
     }
 
     pub fn stop_note(&mut self, note: u8) {
+        info!("stopping note");
         if let Some(active_osc) = self.find(|osc| osc.get_note() == Some(note)) {
             let active_age = active_osc.get_age();
             active_osc.stop();
@@ -190,6 +192,7 @@ impl OscConfiguration {
     }
 
     pub fn play_note(&mut self, note: u8) {
+        info!("playing note {}", note);
         if let Some(active_osc) = self.find(|osc| osc.get_note() == Some(note)) {
             // retrigger
             let active_age = active_osc.get_age();
@@ -240,7 +243,7 @@ impl OscConfiguration {
     }
 
     pub fn handle_interrupt(&mut self) {
-        self.for_each(|os| os.stop());
+        self.for_each(|os| os.handle_interrupt());
     }
 
     pub fn new_single(slices: OscSlices, floppies: Floppies) -> Self {
@@ -274,7 +277,7 @@ impl OscConfiguration {
 }
 
 pub struct Oscillators {
-    config: Option<OscConfiguration>,
+    pub config: Option<OscConfiguration>,
 }
 
 impl Oscillators {
@@ -286,6 +289,10 @@ impl Oscillators {
 
     pub fn init(&mut self, floppies: Floppies, slices: OscSlices) {
         self.config = Some(OscConfiguration::new_single(slices, floppies))
+    }
+
+    pub fn init_with_config(&mut self, config: OscConfiguration) {
+        self.config = Some(config);
     }
 
     pub fn to_single(&mut self) {
@@ -321,5 +328,5 @@ fn PWM_IRQ_WRAP() {
             .borrow_mut()
             .deref_mut()
             .handle_interrupt()
-    })
+    });
 }

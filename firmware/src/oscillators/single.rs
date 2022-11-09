@@ -21,6 +21,8 @@ where
     F: Floppy,
 {
     pub fn new(mut pwm: Slice<SID, FreeRunning>, floppy: F) -> Self {
+        pwm.disable();
+        pwm.clear_interrupt();
         pwm.enable_interrupt();
         Self {
             pwm_slice: pwm,
@@ -46,8 +48,10 @@ where
     F: Floppy,
 {
     fn stop(&mut self) {
-        self.floppy.set_enabled(false).unwrap();
         self.pwm_slice.disable();
+        self.pwm_slice.clear_interrupt();
+
+        self.floppy.set_enabled(false).unwrap();
         self.note = None;
     }
 
@@ -61,8 +65,8 @@ where
         if !self.pwm_slice.has_overflown() {
             return;
         }
-
         self.pwm_slice.clear_interrupt();
+
         self.floppy.step().unwrap();
     }
 

@@ -13,9 +13,12 @@ pub struct UnisonoOscillator {
 
 impl UnisonoOscillator {
     pub fn new(
-        pwm_slice: Slice<Pwm0, FreeRunning>,
+        mut pwm_slice: Slice<Pwm0, FreeRunning>,
         floppies: (Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5),
     ) -> Self {
+        pwm_slice.disable();
+        pwm_slice.clear_interrupt();
+        pwm_slice.enable_interrupt();
         Self {
             pwm_slice,
             floppies,
@@ -46,6 +49,9 @@ impl UnisonoOscillator {
 
 impl Oscillator for UnisonoOscillator {
     fn stop(&mut self) {
+        self.pwm_slice.disable();
+        self.pwm_slice.clear_interrupt();
+
         self.all_floppies(|f| f.set_enabled(false).unwrap());
         self.note = None;
     }

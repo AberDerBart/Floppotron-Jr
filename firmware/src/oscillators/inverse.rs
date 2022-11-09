@@ -22,7 +22,10 @@ where
     F0: Floppy,
     F1: Floppy,
 {
-    pub fn new(pwm_slice: Slice<S, FreeRunning>, floppies: (F0, F1)) -> Self {
+    pub fn new(mut pwm_slice: Slice<S, FreeRunning>, floppies: (F0, F1)) -> Self {
+        pwm_slice.disable();
+        pwm_slice.clear_interrupt();
+        pwm_slice.enable_interrupt();
         Self {
             pwm_slice,
             floppies,
@@ -44,6 +47,8 @@ where
     F1: Floppy,
 {
     fn stop(&mut self) {
+        self.pwm_slice.disable();
+        self.pwm_slice.clear_interrupt();
         self.floppies.0.set_enabled(false).unwrap();
         self.floppies.1.set_enabled(false).unwrap();
         self.note = None;
