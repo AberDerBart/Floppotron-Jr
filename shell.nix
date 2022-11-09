@@ -1,28 +1,10 @@
-let 
-  oxalica_overlay = import (builtins.fetchTarball
-    "https://github.com/oxalica/rust-overlay/archive/master.tar.gz");
-  pkgs = import <nixpkgs> { overlays = [ 
-    (self: super: {
-      openocdpico = super.callPackage ./firmware/openocd/with_picoprobe.nix {}; 
-    })
-    oxalica_overlay
-  ]; };
-  rust_channel = pkgs.rust-bin.stable."1.56.1".default;
-in pkgs.mkShell {
-  buildInputs = [
-    (rust_channel.override {
-      extensions = [ "rust-src" ];
-      targets = [ "thumbv6m-none-eabi" ];
-    })
-    pkgs.gdb-multitarget
-    pkgs.openocdpico
-    pkgs.screen
-    pkgs.probe-run
-    pkgs.flip-link
-    # pkgs.pkgsCross.arm-embedded.buildPackages.gcc
-    # pkgs.pkgsCross.arm-embedded.buildPackages.gdb
-  ];
-  nativeBuildInputs = [
-    pkgs.pkgsCross.arm-embedded.buildPackages.gcc
-  ];
-}
+(import
+  (
+    fetchTarball {
+      url = "https://github.com/edolstra/flake-compat/archive/12c64ca55c1014cdc1b16ed5a804aa8576601ff2.tar.gz";
+      sha256 = "0jm6nzb83wa6ai17ly9fzpqc40wg1viib8klq8lby54agpl213w5";
+    }
+  )
+  {
+    src = ./.;
+  }).shellNix
