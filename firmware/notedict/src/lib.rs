@@ -27,9 +27,6 @@ fn note(note: u8) -> TokenStream {
             top_pb: #top_pb,
         }
     );
-    println!("Period: {}", period);
-    println!("top: {}", top);
-    println!("div_int: {}", div_int);
 
     stream.into()
 }
