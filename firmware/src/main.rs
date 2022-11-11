@@ -6,18 +6,13 @@
 
 use core::ops::DerefMut;
 
-use bsp::{
-    entry,
-    hal::uart::{DataBits, StopBits, UartConfig},
-};
+use bsp::entry;
 use cortex_m::interrupt;
 use defmt::*;
 use defmt_rtt as _;
-use embedded_hal::digital::v2::OutputPin;
-use embedded_time::{fixed_point::FixedPoint, rate::Baud};
 use panic_probe as _;
 
-use rp2040_project_template::{
+use floppotron_jr::{
     deactivate_slice_ints,
     floppy::{Floppy0, Floppy1, Floppy2, Floppy3, Floppy4, Floppy5},
     listen_to_midi,

@@ -198,6 +198,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a357d28ed41a50f9c765dbfe56cbc04a64e53e5fc58ba79fbc34c10ef3df831f"
 
 [[package]]
+name = "floppotron-jr"
+version = "0.1.0"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "defmt",
+ "defmt-rtt",
+ "embedded-hal",
+ "embedded-time",
+ "midi-port",
+ "notedict",
+ "panic-probe",
+ "rp-pico",
+]
+
+[[package]]
 name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -546,22 +562,6 @@ dependencies = [
  "cortex-m",
  "cortex-m-rt",
  "vcell",
-]
-
-[[package]]
-name = "rp2040-project-template"
-version = "0.1.0"
-dependencies = [
- "cortex-m",
- "cortex-m-rt",
- "defmt",
- "defmt-rtt",
- "embedded-hal",
- "embedded-time",
- "midi-port",
- "notedict",
- "panic-probe",
- "rp-pico",
 ]
 
 [[package]]
