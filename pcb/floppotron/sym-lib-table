@@ -4,4 +4,5 @@
   (lib (name "eurocad")(type "Legacy")(uri "${KIPRJMOD}/../eurocad/eurocad.lib")(options "")(descr ""))
   (lib (name "floppotron-rescue")(type "Legacy")(uri "${KIPRJMOD}/floppotron-rescue.lib")(options "")(descr ""))
   (lib (name "parts")(type "KiCad")(uri "${KIPRJMOD}/../../../../continuous/kicad-parts/kicad-parts.kicad_sym")(options "")(descr ""))
+  (lib (name "kosmo")(type "KiCad")(uri "${KIPRJMOD}/../../../../continuous/kicad-parts/kosmo.kicad_sym")(options "")(descr ""))
 )
