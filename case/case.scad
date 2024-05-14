@@ -24,6 +24,7 @@ module kosmoPanel2d(w) {
 module ports2d() {
   // ports on the pcb, measured form the bottom of the PCB
   translate([10.892, 1.6+.3]) square([12.319, 10.6]);
+  translate([18,0]) 
   translate([37, 1.6+9.75]) circle(d=18);
   translate([83.496, 1.6+6.5]) circle(d=11.2);
 }
