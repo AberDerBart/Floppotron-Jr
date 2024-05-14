@@ -23,8 +23,9 @@ module kosmoPanel2d(w) {
 
 module ports2d() {
   // ports on the pcb, measured form the bottom of the PCB
-  translate([10.892, 1.6+.3]) square([12.319, 10.6]);
   translate([18,0]) 
+    // USB port, measured from Pin 1, bottom of PCB
+    translate([-7.41, 1.6+0.3])square([12.319, 10.6]);
   translate([37, 1.6+9.75]) circle(d=18);
   translate([83.496, 1.6+6.5]) circle(d=11.2);
 }
@@ -61,12 +62,14 @@ module pcbMount2d() {
       translate([X_BORDER, 0, 0])square([8.8,95]);
       translate([X_BORDER+FLOPPY_SIZE.x-8.8, 0, 0])square([8.8,95]);
     }
-    for(pos = [
-      [125/2+46, 4+3],
-      [125/2-46, 4+3],
-      [125/2+46, 3+92 - 4],
-      [125/2-46, 3+92 - 4],
-    ]){
+    translate([125/2, 3])
+      for(pos = [
+        [46, 4],
+        [-46, 4],
+        [+46, 92 - 4],
+        [-46, 92 - 4],
+      ])
+    {
       #translate(pos)circle(d=2.8);
     }
   }
