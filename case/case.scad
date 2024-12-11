@@ -7,34 +7,55 @@ D_PIEZO = 30; // 27mm piezo disk + 1.5mm padding
 Z_PCB = 10 + FLOPPY_SIZE.y * 6 + 3;
 X_BORDER = (125 - FLOPPY_SIZE.x)/2;
 
-module kosmoPanel2d(w) {
+module kosmoPanel2d(w, old_hole_style=true) {
   difference(){
     square([w,200]);
-    for (p = [
-      [5, 5],
-      [5, 195],
-      [w-5, 5],
-      [w-5, 195],
-    ]) {
-      translate(p) circle(d=3);
+    if (old_hole_style) {
+      for (p = [
+        [5, 5],
+        [5, 195],
+        [w-5, 5],
+        [w-5, 195],
+      ]) {
+        translate(p) circle(d=3.2);
+      }
+    }else{
+      for (p = [
+        [4.5, 3],
+        [4.5, 197],
+        [w-4.5, 3],
+        [w-4.5, 197],
+      ]) {
+        translate(p) hull(){
+          translate([-1.5,0])circle(d=3.2);
+          translate([1.5,0])circle(d=3.2);
+        }
+      }
     }
   }
 }
 
-module ports2d() {
+module ports2d(usb=true) {
   // ports on the pcb, measured form the bottom of the PCB
-  translate([18,0]) 
+  if(usb) translate([18,0]) 
     // USB port, measured from Pin 1, bottom of PCB
     translate([-7.41, 1.6+0.3])square([12.319, 10.6]);
   translate([37, 1.6+9.75]) circle(d=18);
-  translate([83.496, 1.6+6.5]) circle(d=11.2);
 }
 
-module frontPanel2d() {
+module frontPanel2d(interface=false, usb=true) {
   difference(){
-    kosmoPanel2d(125);
+    kosmoPanel2d(interface ? 150: 125);
     translate([X_BORDER, 10])square([FLOPPY_SIZE.x, FLOPPY_SIZE.y * N_FLOPPIES]);
-    translate([X_BORDER, Z_PCB]) ports2d();
+    translate([X_BORDER, Z_PCB]) ports2d(usb=usb);
+    if (interface) {
+      for(y=[25,75,100,150,175]){
+        translate([137.5,y]) circle(d=11.2);
+      }
+      for(y=[87.5,112.5,162.5,187.5]){
+        translate([137.5,y]) circle(d=5);
+      }
+    }
   }
 }
 
@@ -70,7 +91,7 @@ module pcbMount2d() {
         [-46, 92 - 4],
       ])
     {
-      #translate(pos)circle(d=2.8);
+      translate(pos)circle(d=2.8);
     }
   }
 }
@@ -109,8 +130,8 @@ module rightWall() {
   }
 
   module forEachCableGuide(){
-    for(i = [1:6]){
-      translate([75, i * FLOPPY_SIZE.y + 15])children();
+    for(i = [2:4]){
+      translate([75, i * FLOPPY_SIZE.y + 10])children();
     }
   }
 
@@ -127,11 +148,11 @@ module rightWall() {
   }
 }
 
-module case(){
-  rotate([90,0,0])translate([0,0,-3])linear_extrude(3)frontPanel2d();
+module case(interface = false, usb=true){
+  rotate([90,0,0])translate([0,0,-3])linear_extrude(3)frontPanel2d(interface=interface, usb=usb);
   translate([X_BORDER-3,0,0])rotate([90,0,90])linear_extrude(3)side2d();
   rightWall();
   translate([0,0,Z_PCB-3])linear_extrude(3)pcbMount2d();
 }
 
-case();
+case(interface=true, usb=false);
