@@ -43,6 +43,16 @@ module ports2d(usb=true) {
   translate([37, 1.6+9.75]) circle(d=18);
 }
 
+module labels2d() {
+  translate([133,187.5]) text("MOD",5, "JetBrainsMono Nerd Font:style=SemiBold", halign="right", valign="center");
+  translate([133,162.5]) text("VEL",5, "JetBrainsMono Nerd Font:style=SemiBold", halign="right", valign="center");
+
+  translate([133,112.5]) text("TRIG",5, "JetBrainsMono Nerd Font:style=SemiBold", halign="right", valign="center");
+  translate([133,87.5]) text("GATE",5, "JetBrainsMono Nerd Font:style=SemiBold", halign="right", valign="center");
+
+  translate([133,37.5]) text("OUT",5, "JetBrainsMono Nerd Font:style=SemiBold", halign="right", valign="center");
+}
+
 module frontPanel2d(interface=false, usb=true) {
   difference(){
     kosmoPanel2d(interface ? 150: 125);
@@ -149,10 +159,15 @@ module rightWall() {
 }
 
 module case(interface = false, usb=true){
-  rotate([90,0,0])translate([0,0,-3])linear_extrude(3)frontPanel2d(interface=interface, usb=usb);
-  translate([X_BORDER-3,0,0])rotate([90,0,90])linear_extrude(3)side2d();
-  rightWall();
-  translate([0,0,Z_PCB-3])linear_extrude(3)pcbMount2d();
+  difference(){
+    union(){
+      rotate([90,0,0])translate([0,0,-3])linear_extrude(3)frontPanel2d(interface=interface, usb=usb);
+      translate([X_BORDER-3,0,0])rotate([90,0,90])linear_extrude(3)side2d();
+      rightWall();
+      translate([0,0,Z_PCB-3])linear_extrude(3)pcbMount2d();
+    }
+    rotate([90,0,0])translate([0,0,-1])linear_extrude(2)labels2d();
+  }
 }
 
 case(interface=true, usb=false);
