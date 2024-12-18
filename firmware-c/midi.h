@@ -8,6 +8,7 @@
 #define MIDI_PITCHBEND 0xe0
 #define MIDI_CONTROL_CHANGE 0xb0
 
+#define MIDI_CC_MODULATION_WHEEL 1
 #define MIDI_CC_ALL_NOTES_OFF 123
 
 void midi_init();

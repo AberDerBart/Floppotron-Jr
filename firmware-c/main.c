@@ -61,13 +61,19 @@ void midi_task()
 
     if ((packet.status & 0xf0) == MIDI_CONTROL_CHANGE)
     {
-        if (packet.b1 == MIDI_CC_ALL_NOTES_OFF)
+        switch (packet.b1)
         {
+        case MIDI_CC_ALL_NOTES_OFF:
             noteStack_clear();
+            break;
+        case MIDI_CC_MODULATION_WHEEL:
+            set_mod(packet.b2);
+            break;
+        default:
+            break;
         }
+
+        set_gate(!noteStack_is_empty());
+
+        dispatcher_run();
     }
-
-    set_gate(!noteStack_is_empty());
-
-    dispatcher_run();
-}
