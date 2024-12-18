@@ -10,7 +10,7 @@
 void oscillator_init();
 void oscillator_by_index_set_note(uint8_t slice, uint8_t note);
 void oscillator_by_index_stop(uint8_t slice);
-void oscillator_set_pitchbend(uint16_t pitchbend, uint8_t scale);
+void oscillators_set_pitchbend(uint16_t pitchbend, uint8_t scale);
 
 struct oscillator
 {

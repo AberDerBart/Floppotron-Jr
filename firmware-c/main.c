@@ -56,7 +56,7 @@ void midi_task()
     if ((packet.status & 0xf0) == MIDI_PITCHBEND)
     {
         uint16_t pitchbend_val = packet.b1 | packet.b2 << 7;
-        oscillator_set_pitchbend(pitchbend_val, 2);
+        oscillators_set_pitchbend(pitchbend_val, 2);
     }
 
     dispatcher_run();

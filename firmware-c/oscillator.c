@@ -31,10 +31,11 @@ void on_pwm_wrap()
 
   for (uint8_t i = 0; i < N_OSCILLATORS; i++)
   {
-    if (irq_mask & 1 << i)
+    struct oscillator *osc = &oscillators[i];
+    if (irq_mask & 1 << osc->slice)
     {
-      oscillator_step(oscillators + i);
-      pwm_clear_irq(i);
+      oscillator_step(osc);
+      pwm_clear_irq(osc->slice);
     }
   }
 }
@@ -65,27 +66,27 @@ struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy)
   return osc;
 }
 
-void oscillator_free(struct oscillator osc)
+void oscillator_stop(struct oscillator *osc)
 {
-  oscillator_by_index_stop(osc.slice);
-  pwm_set_irq_enabled(osc.slice, false);
+  pwm_set_enabled(osc->slice, false);
+  osc->current_note = NO_NOTE;
+  floppy_enable(osc->floppy, false);
 }
 
-void oscillator_by_index_stop(uint8_t slice)
+void oscillator_by_index_stop(uint8_t index)
 {
-  pwm_set_enabled(slice, false);
-  oscillators[slice].current_note = NO_NOTE;
-  floppy_enable(oscillators[slice].floppy, false);
+  oscillator_stop(&oscillators[index]);
 }
 
-void oscillator_by_index_set_note(uint8_t slice, uint8_t note)
+void oscillator_set_note(struct oscillator *osc, uint8_t note)
 {
   if (note == NO_NOTE)
   {
-    oscillator_by_index_stop(slice);
+    oscillator_stop(osc);
   }
-  floppy_enable(oscillators[slice].floppy, true);
-  oscillators[slice].current_note = note;
+
+  floppy_enable(osc->floppy, true);
+  osc->current_note = note;
 
   note += note_offset;
 
@@ -99,7 +100,7 @@ void oscillator_by_index_set_note(uint8_t slice, uint8_t note)
   }
 
   // set clock divider
-  pwm_set_clkdiv_int_frac(slice, noteDict[note].clk_div, 0);
+  pwm_set_clkdiv_int_frac(osc->slice, noteDict[note].clk_div, 0);
 
   // calculate period
   uint16_t min_period = noteDict[note].wrap_pb_up;
@@ -107,11 +108,22 @@ void oscillator_by_index_set_note(uint8_t slice, uint8_t note)
   uint16_t period_diff = max_period - min_period;
 
   uint16_t period = max_period - (((uint32_t)period_diff * pitchbend) >> 13);
-  pwm_set_wrap(slice, period);
-  pwm_set_chan_level(slice, 0, period / 2);
+  pwm_set_wrap(osc->slice, period);
+  pwm_set_chan_level(osc->slice, 0, period / 2);
 
   // enable oscillator
-  pwm_set_enabled(slice, true);
+  pwm_set_enabled(osc->slice, true);
+}
+
+void oscillator_free(struct oscillator osc)
+{
+  oscillator_stop(&osc);
+  pwm_set_irq_enabled(osc.slice, false);
+}
+
+void oscillator_by_index_set_note(uint8_t index, uint8_t note)
+{
+  oscillator_set_note(&oscillators[index], note);
 }
 
 void oscillator_step(struct oscillator *osc)
@@ -119,7 +131,7 @@ void oscillator_step(struct oscillator *osc)
   floppy_step(osc->floppy);
 }
 
-void oscillator_set_pitchbend(uint16_t pb, uint8_t scale)
+void oscillators_set_pitchbend(uint16_t pb, uint8_t scale)
 {
   int16_t scaled_pb = ((int16_t)pb - PB_CENTER) * scale;
 
@@ -139,7 +151,7 @@ void oscillator_set_pitchbend(uint16_t pb, uint8_t scale)
   {
     if (oscillators[i].current_note != NO_NOTE)
     {
-      oscillator_by_index_set_note(i, oscillators[i].current_note);
+      oscillator_set_note(&oscillators[i], oscillators[i].current_note);
     }
   }
 }
