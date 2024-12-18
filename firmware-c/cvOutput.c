@@ -4,16 +4,24 @@
 #include "pico/stdlib.h"
 #include <stdbool.h>
 
-#define A_OUT_PWM_SLICE 1
-
-#define VELOCITY_CHAN PWM_CHAN_B
-#define MOD_CHAN PWM_CHAN_A
-
 #define VELOCITY_PIN 2
 #define MOD_PIN 3
 
 #define GATE_PIN 26
 #define TRIG_PIN 4
+
+#define A_OUT_PWM_SLICE 1
+
+#define VELOCITY_CHAN PWM_CHAN_B
+#define MOD_CHAN PWM_CHAN_A
+
+#define TRIG_ALARM_NUM 0
+#define TRIG_DURATION_US 5000
+
+static void reset_trig()
+{
+    gpio_put(TRIG_PIN, false);
+}
 
 void out_init()
 {
@@ -35,6 +43,10 @@ void out_init()
     gpio_set_function(MOD_PIN, GPIO_FUNC_PWM);
 
     pwm_set_enabled(A_OUT_PWM_SLICE, true);
+
+    // init alarm for turning off trigger signal
+    hardware_alarm_claim(TRIG_ALARM_NUM);
+    hardware_alarm_set_callback(TRIG_ALARM_NUM, reset_trig);
 }
 
 void set_velocity(uint8_t velocity)
@@ -49,9 +61,11 @@ void set_mod(uint8_t mod)
     pwm_set_chan_level(A_OUT_PWM_SLICE, MOD_CHAN, level);
 }
 
-void set_trig(bool trig)
+void pulse_trig()
 {
-    gpio_put(TRIG_PIN, trig);
+    absolute_time_t current_time = time_us_64();
+    hardware_alarm_set_target(TRIG_ALARM_NUM, current_time + TRIG_DURATION_US);
+    gpio_put(TRIG_PIN, true);
 }
 
 void set_gate(bool gate)

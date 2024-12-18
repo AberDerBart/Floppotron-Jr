@@ -40,6 +40,7 @@ void midi_task()
         if (packet.b2 != 0)
         {
             noteStack_push(packet.b1);
+            pulse_trig();
         }
         else
         {

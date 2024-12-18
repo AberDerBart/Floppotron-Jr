@@ -10,7 +10,7 @@ void set_velocity(uint8_t velocity);
 
 void set_mod(uint8_t mod);
 
-void set_trig(bool trig);
+void pulse_trig();
 
 void set_gate(bool gate);
 
