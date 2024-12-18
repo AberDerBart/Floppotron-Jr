@@ -11,6 +11,8 @@ void noteStack_init();
 void noteStack_push(uint8_t note);
 void noteStack_rm(uint8_t note);
 
-size_t noteStack_getTop(uint8_t* res, size_t n);
+size_t noteStack_getTop(uint8_t *res, size_t n);
+
+bool noteStack_is_empty();
 
 #endif

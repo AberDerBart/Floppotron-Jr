@@ -40,19 +40,16 @@ void midi_task()
         if (packet.b2 != 0)
         {
             noteStack_push(packet.b1);
-            led_set(true);
         }
         else
         {
             noteStack_rm(packet.b1);
-            led_set(false);
         }
     }
 
     if ((packet.status & 0xf0) == MIDI_NOTE_OFF)
     {
         noteStack_rm(packet.b1);
-        led_set(false);
     }
 
     if ((packet.status & 0xf0) == MIDI_PITCHBEND)
@@ -60,6 +57,8 @@ void midi_task()
         uint16_t pitchbend_val = packet.b1 | packet.b2 << 7;
         oscillators_set_pitchbend(pitchbend_val, 2);
     }
+
+    set_gate(!noteStack_is_empty());
 
     dispatcher_run();
 }
