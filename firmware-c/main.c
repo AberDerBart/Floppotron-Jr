@@ -59,6 +59,14 @@ void midi_task()
         oscillators_set_pitchbend(pitchbend_val, 2);
     }
 
+    if ((packet.status & 0xf0) == MIDI_CONTROL_CHANGE)
+    {
+        if (packet.b1 == MIDI_CC_ALL_NOTES_OFF)
+        {
+            noteStack_clear();
+        }
+    }
+
     set_gate(!noteStack_is_empty());
 
     dispatcher_run();

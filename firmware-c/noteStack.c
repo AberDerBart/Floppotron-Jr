@@ -71,6 +71,17 @@ void noteStack_rm(uint8_t noteVal)
   }
 }
 
+void noteStack_clear()
+{
+  while (top)
+  {
+    struct stackNote *next = top->down;
+    top->up = NULL;
+    top->down = NULL;
+    top = next;
+  }
+}
+
 size_t noteStack_getTop(uint8_t *res, size_t n)
 {
   size_t read = 0;

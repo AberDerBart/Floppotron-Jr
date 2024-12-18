@@ -6,10 +6,14 @@
 #define MIDI_NOTE_ON 0x90
 #define MIDI_NOTE_OFF 0x80
 #define MIDI_PITCHBEND 0xe0
+#define MIDI_CONTROL_CHANGE 0xb0
+
+#define MIDI_CC_ALL_NOTES_OFF 123
 
 void midi_init();
 
-struct midi_packet {
+struct midi_packet
+{
     uint8_t status;
     uint8_t b1;
     uint8_t b2;
