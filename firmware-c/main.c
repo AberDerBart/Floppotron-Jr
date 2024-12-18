@@ -35,8 +35,9 @@ void midi_task()
 {
     struct midi_packet packet = midi_read();
 
-    if ((packet.status & 0xf0) == MIDI_NOTE_ON)
+    switch (packet.status & 0xf0)
     {
+    case MIDI_NOTE_ON:
         if (packet.b2 != 0)
         {
             noteStack_push(packet.b1);
@@ -46,21 +47,15 @@ void midi_task()
         {
             noteStack_rm(packet.b1);
         }
-    }
-
-    if ((packet.status & 0xf0) == MIDI_NOTE_OFF)
-    {
+        break;
+    case MIDI_NOTE_OFF:
         noteStack_rm(packet.b1);
-    }
-
-    if ((packet.status & 0xf0) == MIDI_PITCHBEND)
-    {
+        break;
+    case MIDI_PITCHBEND:
         uint16_t pitchbend_val = packet.b1 | packet.b2 << 7;
         oscillators_set_pitchbend(pitchbend_val, 2);
-    }
-
-    if ((packet.status & 0xf0) == MIDI_CONTROL_CHANGE)
-    {
+        break;
+    case MIDI_CONTROL_CHANGE:
         switch (packet.b1)
         {
         case MIDI_CC_ALL_NOTES_OFF:
@@ -72,8 +67,11 @@ void midi_task()
         default:
             break;
         }
-
-        set_gate(!noteStack_is_empty());
-
-        dispatcher_run();
+    default:
+        break;
     }
+
+    set_gate(!noteStack_is_empty());
+
+    dispatcher_run();
+}
