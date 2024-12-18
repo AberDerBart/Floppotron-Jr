@@ -40,16 +40,18 @@ void midi_task()
     case MIDI_NOTE_ON:
         if (packet.b2 != 0)
         {
-            noteStack_push(packet.b1);
+            noteStack_push(packet.b1, packet.b2);
             pulse_trig();
         }
         else
         {
             noteStack_rm(packet.b1);
         }
+        set_velocity(noteStack_get_velocity());
         break;
     case MIDI_NOTE_OFF:
         noteStack_rm(packet.b1);
+        set_velocity(noteStack_get_velocity());
         break;
     case MIDI_PITCHBEND:
         uint16_t pitchbend_val = packet.b1 | packet.b2 << 7;

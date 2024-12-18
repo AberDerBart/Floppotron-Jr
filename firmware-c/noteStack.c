@@ -7,6 +7,7 @@ struct stackNote
   struct stackNote *up;
   struct stackNote *down;
   uint8_t value;
+  uint8_t velocity;
 };
 
 struct stackNote noteStack[128];
@@ -23,7 +24,7 @@ void noteStack_init()
   }
 }
 
-void noteStack_push(uint8_t noteVal)
+void noteStack_push(uint8_t noteVal, uint8_t velocity)
 {
   if (noteVal >= 128)
   {
@@ -32,6 +33,8 @@ void noteStack_push(uint8_t noteVal)
   noteStack_rm(noteVal);
 
   struct stackNote *note = &noteStack[noteVal];
+
+  note->velocity = velocity;
 
   note->down = top;
   if (top)
@@ -100,4 +103,14 @@ size_t noteStack_getTop(uint8_t *res, size_t n)
 bool noteStack_is_empty()
 {
   return top == NULL;
+}
+
+uint8_t noteStack_get_velocity()
+{
+  if (!top)
+  {
+    return 0;
+  }
+
+  return top->velocity;
 }
