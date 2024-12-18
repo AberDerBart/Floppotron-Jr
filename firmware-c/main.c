@@ -6,6 +6,7 @@
 #include "noteStack.h"
 #include "oscillator.h"
 #include "dispatcher.h"
+#include "cvOutput.h"
 
 void midi_task();
 
@@ -16,6 +17,7 @@ int main(void)
     noteStack_init();
     oscillator_init();
     dispatcher_init();
+    out_init();
 
     stdio_init_all();
 

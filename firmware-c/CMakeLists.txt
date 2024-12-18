@@ -21,7 +21,7 @@ pico_sdk_init()
 add_custom_command(OUTPUT "noteDict.h" COMMAND python ${CMAKE_CURRENT_LIST_DIR}/genNoteDict.py > ${CMAKE_CURRENT_LIST_DIR}/noteDict.h)
 
 # rest of your project
-add_executable(floppotron main.c midi.h midi.c led.h led.c oscillator.h oscillator.c noteDict.h noteStack.c noteStack.h dispatcher.c dispatcher.h floppy.c floppy.h)
+add_executable(floppotron main.c midi.h midi.c led.h led.c oscillator.h oscillator.c noteDict.h noteStack.c noteStack.h dispatcher.c dispatcher.h floppy.c floppy.h cvOutput.c cvOutput.h)
 
 target_include_directories(floppotron PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
