@@ -20,6 +20,8 @@ struct oscillator oscillators[8];
 void oscillator_step(struct oscillator *osc);
 struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy);
 
+const uint OSCILLATOR_PWM_SLICES[N_OSCILLATORS] = {0, 2, 3, 4, 5, 6};
+
 // pitchbend is the pitchbend up scaled in 13 bits (like the poistive half of the MIDI pitchbend value)
 uint16_t pitchbend = 0;
 // not negative pitchbend or pitchbend > 1 halfstep, adjust the note
@@ -50,7 +52,7 @@ void oscillator_init()
 
   for (uint8_t i = 0; i < N_OSCILLATORS; i++)
   {
-    oscillators[i] = oscillator_new(i, &floppies[i]);
+    oscillators[i] = oscillator_new(OSCILLATOR_PWM_SLICES[i], &floppies[i]);
   }
 }
 
