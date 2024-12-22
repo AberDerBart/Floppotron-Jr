@@ -21,7 +21,6 @@
           pkgs.python310
           pkgs.cmake
           pkgs.git
-          pkgs.ninja
           pkgs.gcc-arm-embedded
           pico-sdk-full
         ];
