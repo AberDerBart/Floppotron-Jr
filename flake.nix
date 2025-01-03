@@ -22,9 +22,14 @@
           pkgs.git
           pkgs.gcc-arm-embedded
           pico-sdk-full
+          
+          pkgs.rtmidi
+          pkgs.alsa-utils
 
           pkgs.python311
           pkgs.python311Packages.pycryptodomex
+          pkgs.python311Packages.mido
+          pkgs.python311Packages.rtmidi-python
         ];
 
         PICO_SDK_PATH = "${pico-sdk-full}/lib/pico-sdk";
