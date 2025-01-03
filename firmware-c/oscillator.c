@@ -90,16 +90,18 @@ void oscillator_set_note(struct oscillator *osc, uint8_t note)
   floppy_enable(osc->floppy, true);
   osc->current_note = note;
 
-  note += note_offset;
+  int16_t new_note = note + note_offset;
 
-  if (note < 0)
+  if (new_note < 0)
   {
-    note = 0;
+    new_note = 0;
   }
-  if (note > 127)
+  if (new_note > 127)
   {
-    note = 127;
+    new_note = 127;
   }
+
+  note = new_note;
 
   // set clock divider
   pwm_set_clkdiv_int_frac(osc->slice, noteDict[note].clk_div, 0);
