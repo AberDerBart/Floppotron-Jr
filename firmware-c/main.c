@@ -33,10 +33,8 @@ int main(void)
     return 0;
 }
 
-void midi_task()
+void handle_midi_packet(struct midi_packet packet)
 {
-    struct midi_packet packet = midi_read();
-
     switch (packet.status & 0xf0)
     {
     case MIDI_NOTE_ON:
@@ -78,4 +76,14 @@ void midi_task()
     set_gate(!noteStack_is_empty());
 
     dispatcher_run();
+}
+
+void midi_task()
+{
+    struct midi_packet packet;
+
+    if (midi_ble_try_read(&packet))
+    {
+        handle_midi_packet(packet);
+    }
 }
