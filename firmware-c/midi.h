@@ -23,4 +23,6 @@ struct midi_packet
 void midi_write(uint8_t cmd, uint8_t b1, uint8_t b2);
 struct midi_packet midi_read();
 
+bool midi_is_status_byte(uint8_t byte);
+
 #endif

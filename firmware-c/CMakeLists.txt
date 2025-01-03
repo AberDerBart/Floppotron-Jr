@@ -1,33 +1,67 @@
 cmake_minimum_required(VERSION 3.13)
-
+set(target_name floppotron-jr)
 set(PICO_BOARD pico_w)
-
-
-
-# initialize pico-sdk from GIT
-# (note this can come from environment, CMake cache etc)
-set(PICO_SDK_FETCH_FROM_GIT on)
-
-# pico_sdk_import.cmake is a single file copied from this SDK
-# note: this must happen before project()
 include(pico_sdk_import.cmake)
-
-project(my_project)
-
-# initialize the Raspberry Pi Pico SDK
+project(${target_name})
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
+
+# Make a GATT header file from a BTstack GATT file
+# Pass the target library name library type and path to the GATT input file
+# To add additional directories to the gatt #import path, one "-I[custom_path]"
+# argument for each custom_path to the end of the argument list.
+# TODO if pull request #1445 to the pico-sdk project is approved, then
+# remove this function and use pico_btstack_make_gatt_header() instead
+function(my_pico_btstack_make_gatt_header TARGET_LIB TARGET_TYPE GATT_FILE)
+        find_package (Python3 REQUIRED COMPONENTS Interpreter)
+        get_filename_component(GATT_NAME "${GATT_FILE}" NAME_WE)
+        get_filename_component(GATT_PATH "${GATT_FILE}" PATH)
+        set(GATT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
+        set(GATT_HEADER "${GATT_BINARY_DIR}/${GATT_NAME}.h")
+        set(TARGET_GATT "${TARGET_LIB}_gatt_header")
+
+        add_custom_target(${TARGET_GATT} DEPENDS ${GATT_HEADER})
+        add_custom_command(
+                OUTPUT ${GATT_HEADER}
+                DEPENDS ${GATT_FILE}
+                WORKING_DIRECTORY ${GATT_PATH}
+                COMMAND ${CMAKE_COMMAND} -E make_directory ${GATT_BINARY_DIR} &&
+                        ${Python3_EXECUTABLE} ${PICO_SDK_PATH}/lib/btstack/tool/compile_gatt.py ${GATT_FILE} ${GATT_HEADER} ${ARGN}
+                VERBATIM)
+        add_dependencies(${TARGET_LIB} ${TARGET_GATT})
+        target_include_directories(${TARGET_LIB} ${TARGET_TYPE} ${GATT_BINARY_DIR})
+endfunction()
+
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/ring_buffer_lib)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/pico-w-ble-midi-lib)
 
 # generate the note dict
 add_custom_command(OUTPUT "noteDict.h" COMMAND python ${CMAKE_CURRENT_LIST_DIR}/genNoteDict.py > ${CMAKE_CURRENT_LIST_DIR}/noteDict.h)
 
 # rest of your project
-add_executable(floppotron main.c midi.h midi.c led.h led.c oscillator.h oscillator.c noteDict.h noteStack.c noteStack.h dispatcher.c dispatcher.h floppy.c floppy.h cvOutput.c cvOutput.h)
+add_executable(${target_name} main.c midi.h midi.c led.h led.c oscillator.h oscillator.c noteDict.h noteStack.c noteStack.h dispatcher.c dispatcher.h floppy.c floppy.h cvOutput.c cvOutput.h midi_ble.c midi_ble.h)
 
-target_include_directories(floppotron PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(floppotron pico_stdlib hardware_pwm)
-pico_add_extra_outputs(floppotron)
+target_link_libraries(
+        ${target_name}
+        pico_stdlib
+        hardware_pwm
+        pico_btstack_ble
+        pico_btstack_cyw43
+        pico_cyw43_arch_none
+        ble_midi_service_lib
+        ring_buffer_lib
+)
 
-pico_enable_stdio_usb(floppotron 1)
-pico_enable_stdio_uart(floppotron 0)
+target_link_options(${target_name} PRIVATE -Xlinker --print-memory-usage)
+target_compile_options(${target_name} PRIVATE -Wall -Wextra)
+
+my_pico_btstack_make_gatt_header(${target_name} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/midi-ble.gatt" "-I${CMAKE_CURRENT_LIST_DIR}/lib/pico-w-ble-midi-lib")
+
+pico_add_extra_outputs(${target_name})
+
+pico_enable_stdio_usb(${target_name} 1)
+pico_enable_stdio_uart(${target_name} 0)
 

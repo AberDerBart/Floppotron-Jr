@@ -1,4 +1,4 @@
-TARGET = build/floppotron.elf
+TARGET = build/floppotron-jr.elf
 
 .PHONY: flash clean distclean debug
 

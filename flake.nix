@@ -18,11 +18,13 @@
           pkgs.openocd-rp2040
         ];
         buildInputs = [
-          pkgs.python310
           pkgs.cmake
           pkgs.git
           pkgs.gcc-arm-embedded
           pico-sdk-full
+
+          pkgs.python311
+          pkgs.python311Packages.pycryptodomex
         ];
 
         PICO_SDK_PATH = "${pico-sdk-full}/lib/pico-sdk";

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include "hardware/uart.h"
 #include "hardware/gpio.h"
 #include "midi.h"
@@ -21,7 +22,8 @@ void midi_write(uint8_t cmd, uint8_t b1, uint8_t b2){
     uart_putc(UART_ID, b2);
 }
 
-bool is_status(uint8_t byte){
+bool midi_is_status_byte(uint8_t byte)
+{
     return (byte & 0x80) == 0x80;
 }
 

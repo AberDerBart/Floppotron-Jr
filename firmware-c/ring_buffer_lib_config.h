@@ -1,0 +1,6 @@
+#ifndef RING_BUFFER_LIB_CONFIG_H
+#define RING_BUFFER_LIB_CONFIG_H
+
+#define RING_BUFFER_SIZE_TYPE uint16_t
+
+#endif

@@ -1,0 +1,6 @@
+[submodule "firmware-c/lib/pico-w-ble-midi-lib"]
+	path = firmware-c/lib/pico-w-ble-midi-lib
+	url = git@github.com:rppicomidi/pico-w-ble-midi-lib.git
+[submodule "firmware-c/lib/ring_buffer_lib"]
+	path = firmware-c/lib/ring_buffer_lib
+	url = git@github.com:rppicomidi/ring_buffer_lib.git

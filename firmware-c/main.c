@@ -7,6 +7,7 @@
 #include "oscillator.h"
 #include "dispatcher.h"
 #include "cvOutput.h"
+#include "midi_ble.h"
 
 void midi_task();
 
@@ -18,6 +19,7 @@ int main(void)
     oscillator_init();
     dispatcher_init();
     out_init();
+    midi_ble_init();
 
     stdio_init_all();
 
