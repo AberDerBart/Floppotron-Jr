@@ -18,7 +18,8 @@ const uint8_t GPIOS_DIR[N_OSCILLATORS] = {7, 17};
 struct oscillator oscillators[8];
 
 void oscillator_step(struct oscillator *osc);
-struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy);
+struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy,
+                                 envelope_config_t *envelope_config);
 
 const uint OSCILLATOR_PWM_SLICES[N_OSCILLATORS] = {0, 2, 3, 4, 5, 6};
 
@@ -40,7 +41,7 @@ void on_pwm_wrap() {
   }
 }
 
-void oscillator_init() {
+void oscillators_init(envelope_config_t *envelope_config) {
   irq_set_exclusive_handler(PWM_IRQ_WRAP, on_pwm_wrap);
 
   pwm_set_irq_enabled(0xff, false);
@@ -48,34 +49,58 @@ void oscillator_init() {
   floppy_init();
 
   for (uint8_t i = 0; i < N_OSCILLATORS; i++) {
-    oscillators[i] = oscillator_new(OSCILLATOR_PWM_SLICES[i], &floppies[i]);
+    oscillators[i] =
+        oscillator_new(OSCILLATOR_PWM_SLICES[i], &floppies[i], envelope_config);
   }
 }
 
-struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy) {
+void oscillator_task() {
+  for (uint8_t i = 0; i < N_OSCILLATORS; i++) {
+    struct oscillator *osc = &oscillators[i];
+    if (osc->current_note != NO_NOTE) {
+      envelope_progress(&osc->envelope_state);
+    }
+  }
+}
+
+struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy,
+                                 envelope_config_t *envelope_config) {
   pwm_set_irq_enabled(slice, true);
 
   struct oscillator osc = {
     slice : slice,
     floppy : floppy,
     current_note : NO_NOTE,
+    envelope_state : envelope_state_default(),
   };
+  if (envelope_config) {
+    envelope_config_apply(&osc.envelope_state, envelope_config);
+  }
   return osc;
 }
 
-void oscillator_stop(struct oscillator *osc) {
+void oscillator_force_stop(struct oscillator *osc) {
   pwm_set_enabled(osc->slice, false);
   osc->current_note = NO_NOTE;
   floppy_enable(osc->floppy, false);
+
+  // update envelope
+  envelope_force_stop(&(osc->envelope_state));
 }
 
-void oscillator_by_index_stop(uint8_t index) {
-  oscillator_stop(&oscillators[index]);
+void oscillator_by_index_force_stop(uint8_t index) {
+  oscillator_force_stop(&oscillators[index]);
 }
 
-void oscillator_set_note(struct oscillator *osc, uint8_t note) {
+void oscillator_set_note(struct oscillator *osc, uint8_t note, bool retrig) {
   if (note == NO_NOTE) {
-    oscillator_stop(osc);
+    oscillator_force_stop(osc);
+    return;
+  }
+
+  if (osc->current_note == NO_NOTE || retrig) {
+    // update envelope
+    envelope_trigger(&(osc->envelope_state));
   }
 
   floppy_enable(osc->floppy, true);
@@ -109,12 +134,12 @@ void oscillator_set_note(struct oscillator *osc, uint8_t note) {
 }
 
 void oscillator_free(struct oscillator osc) {
-  oscillator_stop(&osc);
+  oscillator_force_stop(&osc);
   pwm_set_irq_enabled(osc.slice, false);
 }
 
-void oscillator_by_index_set_note(uint8_t index, uint8_t note) {
-  oscillator_set_note(&oscillators[index], note);
+void oscillator_by_index_set_note(uint8_t index, uint8_t note, bool retrig) {
+  oscillator_set_note(&oscillators[index], note, retrig);
 }
 
 void oscillator_step(struct oscillator *osc) { floppy_step(osc->floppy); }
@@ -133,7 +158,27 @@ void oscillators_set_pitchbend(uint16_t pb, uint8_t scale) {
   // update playing oscillators
   for (size_t i = 0; i < N_OSCILLATORS; i++) {
     if (oscillators[i].current_note != NO_NOTE) {
-      oscillator_set_note(&oscillators[i], oscillators[i].current_note);
+      oscillator_set_note(&oscillators[i], oscillators[i].current_note, false);
     }
   }
+}
+
+void oscillators_set_envelope(envelope_config_t *envelope_config) {
+  for (size_t i = 0; i < N_OSCILLATORS; i++) {
+    struct oscillator *osc = &oscillators[i];
+    envelope_config_apply(&(osc->envelope_state), envelope_config);
+  }
+}
+
+uint32_t oscillators_get_level() {
+  uint32_t max_level = 0;
+  for (size_t i = 0; i < N_OSCILLATORS; i++) {
+    struct oscillator *osc = &oscillators[i];
+    if (osc->current_note != NO_NOTE) {
+      if (osc->envelope_state.level > max_level) {
+        max_level = osc->envelope_state.level;
+      }
+    }
+  }
+  return max_level;
 }

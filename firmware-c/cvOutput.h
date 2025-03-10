@@ -4,7 +4,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-void out_init();
+void cv_output_init();
+
+void cv_output_task();
 
 void set_velocity(uint8_t velocity);
 

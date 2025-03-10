@@ -24,7 +24,7 @@ void dispatcher_run() {
         }
       }
       if (!noteActive) {
-        oscillator_by_index_stop(i_osc);
+        oscillator_by_index_force_stop(i_osc);
       }
     }
   }
@@ -34,7 +34,7 @@ void dispatcher_run() {
       for (int i_osc = 0; i_osc < N_OSCILLATORS; i_osc++) {
         struct oscillator *osc = &oscillators[i_osc];
         if (osc->current_note == NO_NOTE) {
-          oscillator_by_index_set_note(i_osc, notes[i_note]);
+          oscillator_by_index_set_note(i_osc, notes[i_note], true);
           break;
         }
       }

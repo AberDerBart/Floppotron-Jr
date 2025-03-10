@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "hardware/pwm.h"
+#include "oscillator.h"
 #include "pico/stdlib.h"
 
 #define VELOCITY_PIN 2
@@ -21,7 +22,7 @@
 
 static void reset_trig() { gpio_put(TRIG_PIN, false); }
 
-void out_init() {
+void cv_output_init() {
   gpio_init(GATE_PIN);
   gpio_set_dir(GATE_PIN, true);
 
@@ -63,3 +64,9 @@ void pulse_trig() {
 }
 
 void set_gate(bool gate) { gpio_put(GATE_PIN, gate); }
+
+void set_velocity_u32(uint32_t velocity) {
+  pwm_set_chan_level(A_OUT_PWM_SLICE, VELOCITY_CHAN, velocity >> 16);
+}
+
+void cv_output_task() { set_velocity_u32(oscillators_get_level()); }
