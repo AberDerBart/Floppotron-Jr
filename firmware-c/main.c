@@ -2,6 +2,7 @@
 
 #include "cvOutput.h"
 #include "dispatcher.h"
+#include "envelope.h"
 #include "led.h"
 #include "midi.h"
 #include "midi_ble.h"
@@ -15,7 +16,7 @@ int main(void) {
   midi_init();
   led_init();
   noteStack_init();
-  oscillator_init();
+  oscillator_init(NULL);
   dispatcher_init();
   out_init();
   midi_ble_init();
@@ -26,6 +27,7 @@ int main(void) {
 
   while (1) {
     midi_task();
+    envelope_task();
   }
 
   return 0;

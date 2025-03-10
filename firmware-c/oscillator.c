@@ -18,7 +18,8 @@ const uint8_t GPIOS_DIR[N_OSCILLATORS] = {7, 17};
 struct oscillator oscillators[8];
 
 void oscillator_step(struct oscillator *osc);
-struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy);
+struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy,
+                                 envelope_config_t *envelope_config);
 
 const uint OSCILLATOR_PWM_SLICES[N_OSCILLATORS] = {0, 2, 3, 4, 5, 6};
 
@@ -40,7 +41,7 @@ void on_pwm_wrap() {
   }
 }
 
-void oscillator_init() {
+void oscillator_init(envelope_config_t *envelope_config) {
   irq_set_exclusive_handler(PWM_IRQ_WRAP, on_pwm_wrap);
 
   pwm_set_irq_enabled(0xff, false);
@@ -48,18 +49,24 @@ void oscillator_init() {
   floppy_init();
 
   for (uint8_t i = 0; i < N_OSCILLATORS; i++) {
-    oscillators[i] = oscillator_new(OSCILLATOR_PWM_SLICES[i], &floppies[i]);
+    oscillators[i] =
+        oscillator_new(OSCILLATOR_PWM_SLICES[i], &floppies[i], envelope_config);
   }
 }
 
-struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy) {
+struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy,
+                                 envelope_config_t *envelope_config) {
   pwm_set_irq_enabled(slice, true);
 
   struct oscillator osc = {
     slice : slice,
     floppy : floppy,
     current_note : NO_NOTE,
+    envelope_state : envelope_state_default(),
   };
+  if (envelope_config) {
+    envelope_config_apply(&osc.envelope_state, envelope_config);
+  }
   return osc;
 }
 
@@ -67,6 +74,9 @@ void oscillator_stop(struct oscillator *osc) {
   pwm_set_enabled(osc->slice, false);
   osc->current_note = NO_NOTE;
   floppy_enable(osc->floppy, false);
+
+  // update envelope
+  envelope_stop(&(osc->envelope_state));
 }
 
 void oscillator_by_index_stop(uint8_t index) {
@@ -77,6 +87,9 @@ void oscillator_set_note(struct oscillator *osc, uint8_t note) {
   if (note == NO_NOTE) {
     oscillator_stop(osc);
   }
+
+  // update envelope
+  envelope_trigger(&(osc->envelope_state));
 
   floppy_enable(osc->floppy, true);
   osc->current_note = note;

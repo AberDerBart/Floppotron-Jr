@@ -50,6 +50,7 @@ add_executable(${target_name}
         floppy.c
         cvOutput.c
         midi_ble.c
+        envelope.c
 )
 
 target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
