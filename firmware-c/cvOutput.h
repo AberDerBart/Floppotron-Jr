@@ -1,8 +1,8 @@
 #ifndef ANALOG_OUT_H
 #define ANALOG_OUT_H
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 void out_init();
 

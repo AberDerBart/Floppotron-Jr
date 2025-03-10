@@ -40,7 +40,17 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/lib/pico-w-ble-midi-lib)
 add_custom_command(OUTPUT "noteDict.h" COMMAND python ${CMAKE_CURRENT_LIST_DIR}/genNoteDict.py > ${CMAKE_CURRENT_LIST_DIR}/noteDict.h)
 
 # rest of your project
-add_executable(${target_name} main.c midi.h midi.c led.h led.c oscillator.h oscillator.c noteDict.h noteStack.c noteStack.h dispatcher.c dispatcher.h floppy.c floppy.h cvOutput.c cvOutput.h midi_ble.c midi_ble.h)
+add_executable(${target_name} 
+        main.c
+        midi.c
+        led.c
+        oscillator.c
+        noteStack.c
+        dispatcher.c
+        floppy.c
+        cvOutput.c
+        midi_ble.c
+)
 
 target_include_directories(${target_name} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
