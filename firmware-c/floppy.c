@@ -11,6 +11,8 @@ struct floppy floppies[] = {
     FLOPPY_DEFAULTS(8, 9, 22),   FLOPPY_DEFAULTS(5, 6, 7),
 };
 
+void floppy_step(struct floppy *floppy);
+
 void floppy_init() {
   // init GPIO
   for (size_t i = 0; i < N_FLOPPIES; i++) {
@@ -22,6 +24,23 @@ void floppy_init() {
     gpio_set_dir(floppies[i].gpio_enable, true);
 
     gpio_put(floppies[i].gpio_enable, false);
+  }
+
+  for (size_t i = 0; i < N_FLOPPIES; i++) {
+    floppy_enable(&floppies[i], true);
+  }
+
+  // move all floppy heads to the end
+  while (!floppies[0].dir) {
+    for (size_t i = 0; i < N_FLOPPIES; i++) {
+      floppy_step(&floppies[i]);
+    }
+
+    sleep_ms(2);
+  }
+
+  for (size_t i = 0; i < N_FLOPPIES; i++) {
+    floppy_enable(&floppies[i], false);
   }
 }
 
