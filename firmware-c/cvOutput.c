@@ -31,8 +31,7 @@ void cv_output_init() {
 
   // init PWM for velocity and mod
   pwm_set_irq_enabled(A_OUT_PWM_SLICE, false);
-
-  pwm_set_wrap(A_OUT_PWM_SLICE, UINT16_MAX);
+  pwm_set_wrap(A_OUT_PWM_SLICE, 127);
 
   set_velocity(0);
   set_mod(0);
@@ -48,13 +47,11 @@ void cv_output_init() {
 }
 
 void set_velocity(uint8_t velocity) {
-  const uint16_t level = velocity << 9;
-  pwm_set_chan_level(A_OUT_PWM_SLICE, VELOCITY_CHAN, level);
+  pwm_set_chan_level(A_OUT_PWM_SLICE, VELOCITY_CHAN, velocity);
 }
 
 void set_mod(uint8_t mod) {
-  const uint16_t level = mod << 9;
-  pwm_set_chan_level(A_OUT_PWM_SLICE, MOD_CHAN, level);
+  pwm_set_chan_level(A_OUT_PWM_SLICE, MOD_CHAN, mod);
 }
 
 void pulse_trig() {
@@ -66,7 +63,7 @@ void pulse_trig() {
 void set_gate(bool gate) { gpio_put(GATE_PIN, gate); }
 
 void set_velocity_u32(uint32_t velocity) {
-  pwm_set_chan_level(A_OUT_PWM_SLICE, VELOCITY_CHAN, velocity >> 16);
+  pwm_set_chan_level(A_OUT_PWM_SLICE, VELOCITY_CHAN, velocity >> (32 - 7));
 }
 
 void cv_output_task() { set_velocity_u32(oscillators_get_level()); }
