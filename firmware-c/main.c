@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "cvOutput.h"
-#include "dispatcher.h"
 #include "envelope.h"
 #include "led.h"
 #include "midi.h"
@@ -17,7 +16,6 @@ int main(void) {
   led_init();
   noteStack_init();
   oscillators_init(NULL);
-  dispatcher_init();
   cv_output_init();
   midi_ble_init();
 
@@ -43,11 +41,9 @@ void handle_midi_packet(struct midi_packet packet) {
       } else {
         noteStack_rm(packet.b1);
       }
-      set_velocity(noteStack_get_velocity());
       break;
     case MIDI_NOTE_OFF:
       noteStack_rm(packet.b1);
-      set_velocity(noteStack_get_velocity());
       break;
     case MIDI_PITCHBEND:
       uint16_t pitchbend_val = packet.b1 | packet.b2 << 7;
@@ -69,8 +65,6 @@ void handle_midi_packet(struct midi_packet packet) {
   }
 
   set_gate(!noteStack_is_empty());
-
-  dispatcher_run();
 }
 
 void midi_task() {

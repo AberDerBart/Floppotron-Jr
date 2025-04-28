@@ -46,7 +46,6 @@ add_executable(${target_name}
         led.c
         oscillator.c
         noteStack.c
-        dispatcher.c
         floppy.c
         cvOutput.c
         midi_ble.c

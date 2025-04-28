@@ -54,11 +54,18 @@ void oscillators_init(envelope_config_t *envelope_config) {
   }
 }
 
+void oscillator_stop(struct oscillator *osc) {
+  envelope_stop(&osc->envelope_state);
+}
+
 void oscillator_task() {
   for (uint8_t i = 0; i < N_OSCILLATORS; i++) {
     struct oscillator *osc = &oscillators[i];
     if (osc->current_note != NO_NOTE) {
-      envelope_progress(&osc->envelope_state);
+      envelope_phase_t new_phase = envelope_progress(&osc->envelope_state);
+      if (new_phase == ENVELOPE_PHASE_OFF) {
+        oscillator_force_stop(osc);
+      }
     }
   }
 }
@@ -80,16 +87,16 @@ struct oscillator oscillator_new(uint8_t slice, struct floppy *floppy,
 }
 
 void oscillator_force_stop(struct oscillator *osc) {
+  // update note stack
+  noteStack_set_oscillator(osc->current_note, NULL);
+
+  // disable oscillator slice and floppy
   pwm_set_enabled(osc->slice, false);
   osc->current_note = NO_NOTE;
   floppy_enable(osc->floppy, false);
 
   // update envelope
   envelope_force_stop(&(osc->envelope_state));
-}
-
-void oscillator_by_index_force_stop(uint8_t index) {
-  oscillator_force_stop(&oscillators[index]);
 }
 
 void oscillator_set_note(struct oscillator *osc, uint8_t note, bool retrig) {
@@ -103,9 +110,18 @@ void oscillator_set_note(struct oscillator *osc, uint8_t note, bool retrig) {
     envelope_trigger(&(osc->envelope_state));
   }
 
+  // update note stack
+  if (osc->current_note != NO_NOTE) {
+    noteStack_set_oscillator(osc->current_note, NULL);
+  }
+
+  noteStack_set_oscillator(note, osc);
+
+  // enable floppy
   floppy_enable(osc->floppy, true);
   osc->current_note = note;
 
+  // apply pitchbend and note offset
   int16_t new_note = note + note_offset;
 
   if (new_note < 0) {
@@ -136,10 +152,6 @@ void oscillator_set_note(struct oscillator *osc, uint8_t note, bool retrig) {
 void oscillator_free(struct oscillator osc) {
   oscillator_force_stop(&osc);
   pwm_set_irq_enabled(osc.slice, false);
-}
-
-void oscillator_by_index_set_note(uint8_t index, uint8_t note, bool retrig) {
-  oscillator_set_note(&oscillators[index], note, retrig);
 }
 
 void oscillator_step(struct oscillator *osc) { floppy_step(osc->floppy); }

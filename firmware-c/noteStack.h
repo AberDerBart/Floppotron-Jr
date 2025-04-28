@@ -1,6 +1,7 @@
 #ifndef NOTESTACK_H
 #define NOTESTACK_H
 
+#include <oscillator.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -13,7 +14,9 @@ void noteStack_push(uint8_t note, uint8_t velocity);
 void noteStack_rm(uint8_t note);
 void noteStack_clear();
 
-size_t noteStack_getTop(uint8_t *res, size_t n);
+void noteStack_set_oscillator(uint8_t note, struct oscillator* osc);
+
+size_t noteStack_getTop(uint8_t* res, size_t n);
 
 bool noteStack_is_empty();
 
