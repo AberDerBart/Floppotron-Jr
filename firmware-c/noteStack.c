@@ -61,6 +61,10 @@ void noteStack_push(uint8_t noteVal, uint8_t velocity) {
     return;
   }
 
+  // force stop all oscillators in release phase
+  // so released notes do not get loud again due to attack
+  oscillators_force_stop_release_phase(noteVal);
+
   struct stackNote *note = &noteStack[noteVal];
   // make sure we do not mess up the note stack
   if (note->up || note->down) {

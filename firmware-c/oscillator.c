@@ -99,6 +99,16 @@ void oscillator_force_stop(struct oscillator *osc) {
   envelope_force_stop(&(osc->envelope_state));
 }
 
+void oscillators_force_stop_release_phase(uint8_t keep_note) {
+  for (int i = 0; i < N_OSCILLATORS; i++) {
+    struct oscillator *osc = &oscillators[i];
+    if (osc->envelope_state.phase == ENVELOPE_PHASE_RELEASE &&
+        osc->current_note != keep_note) {
+      oscillator_force_stop(osc);
+    }
+  }
+}
+
 void oscillator_set_note(struct oscillator *osc, uint8_t note, bool retrig) {
   if (note == NO_NOTE) {
     oscillator_force_stop(osc);

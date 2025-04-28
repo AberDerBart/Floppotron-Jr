@@ -19,6 +19,7 @@ void oscillators_init(envelope_config_t* envelope_config);
 void oscillators_set_pitchbend(uint16_t pitchbend, uint8_t scale);
 void oscillators_set_envelope(envelope_config_t* envelope_config);
 uint32_t oscillators_get_level();
+void oscillators_force_stop_release_phase(uint8_t keep_note);
 
 void oscillator_task();
 
