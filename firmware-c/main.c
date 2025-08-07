@@ -11,7 +11,11 @@
 
 void midi_task();
 
+envelope_config_t envelope;
+
 int main(void) {
+  envelope = envelope_config_default();
+
   midi_init();
   led_init();
   noteStack_init();
@@ -58,6 +62,22 @@ void handle_midi_packet(struct midi_packet packet) {
           set_mod(packet.b2);
           break;
         default:
+          break;
+        case MIDI_CC_SOUND_CONTROLLER_4_ATTACK:
+          envelope.attack_time = packet.b1;
+          oscillators_set_envelope(&envelope);
+          break;
+        case MIDI_CC_SOUND_CONTROLLER_6_DECAY:
+          envelope.decay_time = packet.b1;
+          oscillators_set_envelope(&envelope);
+          break;
+        case MIDI_CC_SOUND_CONTROLLER_7_SUSTAIN:
+          envelope.sustain_level = packet.b1;
+          oscillators_set_envelope(&envelope);
+          break;
+        case MIDI_CC_SOUND_CONTROLLER_3_RELEASE:
+          envelope.release_time = packet.b1;
+          oscillators_set_envelope(&envelope);
           break;
       }
     default:

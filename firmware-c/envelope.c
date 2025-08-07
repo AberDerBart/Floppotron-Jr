@@ -2,6 +2,18 @@
 
 #include <pico/time.h>
 
+envelope_config_t envelope_config_default() {
+  envelope_config_t config = {
+    attack_time : 0,
+    decay_time : 0,
+    release_time : 0,
+    sustain_level : 127,
+    max_time_ms : 5000,
+  };
+
+  return config;
+}
+
 envelope_state_t envelope_state_default() {
   envelope_state_t state = {
     attack_rate : UINT32_MAX,
@@ -87,7 +99,8 @@ envelope_phase_t envelope_progress_ms(envelope_state_t* state, uint32_t dt_ms) {
         break;
       }
 
-      // If attack is immediate, set level to max and continue to ENVELOPE_PHASE_DECAY
+      // If attack is immediate, set level to max and continue to
+      // ENVELOPE_PHASE_DECAY
       state->level = UINT32_MAX;
       state->phase = ENVELOPE_PHASE_DECAY;
       __attribute__((fallthrough));

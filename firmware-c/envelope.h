@@ -32,6 +32,7 @@ typedef struct {
 } envelope_state_t;
 
 envelope_state_t envelope_state_default();
+envelope_config_t envelope_config_default();
 
 void envelope_config_apply(envelope_state_t* state, envelope_config_t* config);
 
